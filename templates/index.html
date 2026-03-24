@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Запоминалка</title>
+
+    <link rel="manifest" href="/static/manifest.json">
+    <meta name="theme-color" content="#764ba2">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,20 +33,73 @@
             border-radius: 10px;
             font-weight: bold;
             transition: transform 0.2s;
+            cursor: pointer;
         }
         .button:hover {
             transform: scale(1.05);
+        }
+        .info {
+            margin-top: 40px;
+            padding: 20px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            font-size: 14px;
+        }
+        .install-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        .install-btn:hover {
+            background: rgba(255,255,255,0.3);
         }
     </style>
 </head>
 <body>
     <h1>🧠 Запоминалка</h1>
-    <p>Приложение для умного запоминания</p>
+    <p>Приложение для умного запоминания слов</p>
 
     <a href="/study" class="button">Начать тренировку</a>
 
-    <p style="margin-top: 50px; font-size: 0.8em;">
-        PWA для учебной практики
-    </p>
+    <div class="info">
+        <strong>📱 Как это работает</strong><br>
+        • Нажимай на карточку, чтобы увидеть перевод<br>
+        • Оценивай, знаешь ты слово или нет<br>
+        • Приложение запоминает твой прогресс<br>
+        <button id="installBtn" class="install-btn" style="display: none;">
+            📲 Установить приложение
+        </button>
+    </div>
+
+    <script>
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('installBtn');
+            installBtn.style.display = 'inline-block';
+
+            installBtn.addEventListener('click', async () => {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`Пользователь ${outcome === 'accepted' ? 'установил' : 'отклонил'} приложение`);
+                installBtn.style.display = 'none';
+                deferredPrompt = null;
+            });
+        });
+
+        window.addEventListener('appinstalled', () => {
+            console.log('✅ PWA установлено');
+            document.getElementById('installBtn').style.display = 'none';
+        });
+    </script>
 </body>
 </html>

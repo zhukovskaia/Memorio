@@ -1,0 +1,58 @@
+[
+  {
+    "id": 1,
+    "word": "Привет",
+    "translation": "Hello",
+    "correct": 5,
+    "wrong": 2
+  },
+  {
+    "id": 2,
+    "word": "Спасибо",
+    "translation": "Thank you",
+    "correct": 2,
+    "wrong": 2
+  },
+  {
+    "id": 3,
+    "word": "Пожалуйста",
+    "translation": "Please",
+    "correct": 2,
+    "wrong": 3
+  },
+  {
+    "id": 4,
+    "word": "Извините",
+    "translation": "Sorry",
+    "correct": 3,
+    "wrong": 1
+  },
+  {
+    "id": 5,
+    "word": "Доброе утро",
+    "translation": "Good morning",
+    "correct": 2,
+    "wrong": 3
+  },
+  {
+    "id": 6,
+    "word": "Спокойной ночи",
+    "translation": "Good night",
+    "correct": 4,
+    "wrong": 1
+  },
+  {
+    "id": 7,
+    "word": "Как дела?",
+    "translation": "How are you?",
+    "correct": 3,
+    "wrong": 2
+  },
+  {
+    "id": 8,
+    "word": "Отлично",
+    "translation": "Great",
+    "correct": 4,
+    "wrong": 3
+  }
+]
