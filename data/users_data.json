@@ -1,0 +1,290 @@
+{
+  "Aesvna": {
+    "username": "Aesvna",
+    "password": "f6f2ea8f45d8a057c9566a33f99474da2e5c6a6604d736121650e2730c6fb0a3",
+    "created_at": "2026-03-29T00:50:28.843336",
+    "words": [
+      {
+        "id": 1,
+        "word": "PEP 8",
+        "translation": "Стандарт написания кода на Python",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 2,
+        "word": "Переменная",
+        "translation": "Именованное хранилище для данных",
+        "difficulty": "easy",
+        "correct": 2,
+        "wrong": 0
+      },
+      {
+        "id": 3,
+        "word": "Функция",
+        "translation": "Блок кода, который выполняется при вызове",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 4,
+        "word": "Цикл for",
+        "translation": "Итерация по элементам последовательности",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 5,
+        "word": "Цикл while",
+        "translation": "Повторение кода пока условие истинно",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 6,
+        "word": "Условный оператор if",
+        "translation": "Выполнение кода при выполнении условия",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 7,
+        "word": "Список (list)",
+        "translation": "Изменяемая упорядоченная коллекция",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 8,
+        "word": "Словарь (dict)",
+        "translation": "Коллекция пар ключ-значение",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 9,
+        "word": "Кортеж (tuple)",
+        "translation": "Неизменяемая упорядоченная коллекция",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 10,
+        "word": "Множество (set)",
+        "translation": "Коллекция уникальных элементов",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 11,
+        "word": "Комментарий",
+        "translation": "Текст, игнорируемый интерпретатором, начинается с #",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 12,
+        "word": "print()",
+        "translation": "Функция для вывода данных на экран",
+        "difficulty": "easy",
+        "correct": 2,
+        "wrong": 0
+      },
+      {
+        "id": 13,
+        "word": "input()",
+        "translation": "Функция для получения ввода от пользователя",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 14,
+        "word": "int()",
+        "translation": "Преобразование в целое число",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 15,
+        "word": "str()",
+        "translation": "Преобразование в строку",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 16,
+        "word": "len()",
+        "translation": "Возвращает длину объекта",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 17,
+        "word": "range()",
+        "translation": "Генерирует последовательность чисел",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 18,
+        "word": "append()",
+        "translation": "Добавляет элемент в конец списка",
+        "difficulty": "easy",
+        "correct": 3,
+        "wrong": 0
+      },
+      {
+        "id": 19,
+        "word": "Ключевое слово def",
+        "translation": "Используется для определения функции",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 20,
+        "word": "Ключевое слово return",
+        "translation": "Возвращает значение из функции",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 21,
+        "word": "Ключевое слово break",
+        "translation": "Прерывает выполнение цикла",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 22,
+        "word": "Ключевое слово continue",
+        "translation": "Переходит к следующей итерации цикла",
+        "difficulty": "easy",
+        "correct": 2,
+        "wrong": 0
+      },
+      {
+        "id": 23,
+        "word": "None",
+        "translation": "Обозначает отсутствие значения",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 24,
+        "word": "True/False",
+        "translation": "Булевы значения (истина/ложь)",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 25,
+        "word": "Оператор ==",
+        "translation": "Сравнение на равенство",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 0
+      },
+      {
+        "id": 26,
+        "word": "Оператор !=",
+        "translation": "Сравнение на неравенство",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 27,
+        "word": "Оператор and",
+        "translation": "Логическое И",
+        "difficulty": "easy",
+        "correct": 4,
+        "wrong": 0
+      },
+      {
+        "id": 28,
+        "word": "Оператор or",
+        "translation": "Логическое ИЛИ",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 29,
+        "word": "Индексация",
+        "translation": "Доступ к элементу по его позиции (начинается с 0)",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      },
+      {
+        "id": 30,
+        "word": "Срез (slice)",
+        "translation": "Получение подмножества элементов [start:stop:step]",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0
+      }
+    ],
+    "training_sessions": {},
+    "user_level": {
+      "current": 2,
+      "xp": 30,
+      "next_level_xp": 120
+    },
+    "games_progress": {
+      "cards": {
+        "name": "Карточки",
+        "level": 1,
+        "xp": 100,
+        "next_level_xp": 150,
+        "cards_per_game": 10,
+        "xp_per_correct": 5
+      },
+      "quiz": {
+        "name": "Викторина",
+        "level": 3,
+        "xp": 204,
+        "next_level_xp": 150,
+        "questions_per_game": 10,
+        "xp_per_correct": 5
+      },
+      "sprint": {
+        "name": "Спринт",
+        "level": 1,
+        "xp": 16,
+        "next_level_xp": 150,
+        "questions_per_game": 10,
+        "xp_per_correct": 5
+      }
+    },
+    "account_points": 421,
+    "sprint_record": 21,
+    "account_level": 3,
+    "global_stats": {
+      "quiz_played": 1,
+      "sprint_played": 0,
+      "total_correct": 9,
+      "total_wrong": 1
+    }
+  }
+}

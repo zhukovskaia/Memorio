@@ -3,7 +3,6 @@ def calculate_progress(words):
     total_correct = sum(w['correct'] for w in words)
     total_wrong = sum(w['wrong'] for w in words)
     total_attempts = total_correct + total_wrong
-
     success_rate = 0
     if total_attempts > 0:
         success_rate = round((total_correct / total_attempts) * 100)
@@ -38,11 +37,9 @@ def calculate_progress(words):
         }
     }
 
-
 def get_word_stats(word):
     """Получить статистику по одному слову"""
     total = word['correct'] + word['wrong']
-
     difficulty = "new"
     if total > 0:
         if word['correct'] / total >= 0.8:

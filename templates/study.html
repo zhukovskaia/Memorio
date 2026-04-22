@@ -54,6 +54,13 @@
             border-radius: 20px;
         }
 
+        .attempts-info {
+            font-size: 12px;
+            background: rgba(255,255,255,0.15);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
         .scene {
             width: 100%;
             height: 350px;
@@ -239,6 +246,12 @@
             margin: 15px 0;
         }
 
+        .xp-gained {
+            color: #ffd700;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
         .hidden {
             display: none;
         }
@@ -257,12 +270,22 @@
         .disabled-click {
             pointer-events: none;
         }
+
+        .level-up-message {
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            color: #333;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="header">
         <a href="/" class="back-btn">← Назад</a>
         <div class="stats" id="stats">Вопрос 0/0</div>
+        <div class="attempts-info" id="attemptsInfo"></div>
     </div>
 
     <div id="trainingArea">
@@ -284,6 +307,7 @@
                     <div class="result-message" id="resultMessage"></div>
                     <div class="correct-answer" id="correctAnswer"></div>
                     <div class="wrong-answer" id="wrongAnswer"></div>
+                    <div class="xp-gained" id="xpGained"></div>
                 </div>
             </div>
         </div>
@@ -306,6 +330,7 @@
             <p>❌ Неправильных ответов: <strong id="wrongCount">0</strong></p>
             <p>📊 Всего вопросов: <strong id="totalCount">0</strong></p>
         </div>
+        <div id="levelUpMessage" class="level-up-message hidden"></div>
         <button class="next-btn" onclick="location.reload()">🔄 Новая тренировка</button>
         <a href="/" class="next-btn" style="display: inline-block; margin-top: 10px; text-decoration: none; text-align: center;">🏠 На главную</a>
     </div>
@@ -327,15 +352,25 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ count: 10 })
+                    body: JSON.stringify({ count: 5 })
                 });
 
                 const data = await response.json();
+
+                if (data.error) {
+                    alert(data.error);
+                    window.location.href = '/';
+                    return;
+                }
+
                 sessionId = data.session_id;
                 totalQuestions = data.total_questions;
 
-                await loadQuestion();
+                if (data.attempts_left !== undefined) {
+                    document.getElementById('attemptsInfo').textContent = `⚡ Осталось попыток: ${data.attempts_left}`;
+                }
 
+                await loadQuestion();
             } catch (error) {
                 console.error('Ошибка начала тренировки:', error);
                 document.getElementById('questionWord').textContent = 'Ошибка загрузки';
@@ -378,6 +413,8 @@
                 card3d.classList.remove('flipped');
                 card3d.classList.remove('disabled-click');
 
+                document.getElementById('xpGained').textContent = '';
+
             } catch (error) {
                 console.error('Ошибка загрузки вопроса:', error);
             }
@@ -411,6 +448,7 @@
                 const resultMessage = document.getElementById('resultMessage');
                 const correctAnswerDiv = document.getElementById('correctAnswer');
                 const wrongAnswerDiv = document.getElementById('wrongAnswer');
+                const xpGainedDiv = document.getElementById('xpGained');
 
                 if (result.is_correct) {
                     resultIcon.textContent = '✅';
@@ -418,12 +456,17 @@
                     correctAnswerDiv.textContent = `Правильный ответ: ${result.correct_answer}`;
                     wrongAnswerDiv.textContent = '';
                     correctAnswers++;
+
+                    if (result.xp_gained) {
+                        xpGainedDiv.textContent = `✨ +${result.xp_gained} опыта!`;
+                    }
                 } else {
                     resultIcon.textContent = '❌';
                     resultMessage.textContent = 'Неправильно!';
                     correctAnswerDiv.textContent = `Правильный ответ: ${result.correct_answer}`;
                     wrongAnswerDiv.textContent = `Ваш ответ: ${selectedAnswer}`;
                     wrongAnswers++;
+                    xpGainedDiv.textContent = '';
                 }
 
                 questionsAnswered++;
@@ -454,34 +497,61 @@
 
         async function nextQuestion() {
             if (!hasAnswered) return;
-
-            // Загружаем новый вопрос
             await loadQuestion();
         }
 
         function finishTrainingWithResults(results) {
-            document.getElementById('score').textContent = `${results.percentage}%`;
-            document.getElementById('correctCount').textContent = results.correct;
-            document.getElementById('wrongCount').textContent = results.wrong;
-            document.getElementById('totalCount').textContent = results.total;
+            if (results) {
+                document.getElementById('score').textContent = `${results.percentage}%`;
+                document.getElementById('correctCount').textContent = results.correct;
+                document.getElementById('wrongCount').textContent = results.wrong;
+                document.getElementById('totalCount').textContent = results.total;
+            } else {
+                // Если результатов нет, используем локальные счетчики
+                const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+                document.getElementById('score').textContent = `${percentage}%`;
+                document.getElementById('correctCount').textContent = correctAnswers;
+                document.getElementById('wrongCount').textContent = wrongAnswers;
+                document.getElementById('totalCount').textContent = totalQuestions;
+            }
 
             document.getElementById('trainingArea').classList.add('hidden');
             document.getElementById('resultsArea').classList.remove('hidden');
         }
 
         async function finishTraining() {
-            const response = await fetch(`/api/training/session/${sessionId}/results`);
-            const results = await response.json();
+            try {
+                const response = await fetch(`/api/training/session/${sessionId}/results`);
+                const results = await response.json();
 
-            document.getElementById('score').textContent = `${results.percentage}%`;
-            document.getElementById('correctCount').textContent = results.correct;
-            document.getElementById('wrongCount').textContent = results.wrong;
-            document.getElementById('totalCount').textContent = results.total;
+                if (results && !results.error) {
+                    document.getElementById('score').textContent = `${results.percentage}%`;
+                    document.getElementById('correctCount').textContent = results.correct;
+                    document.getElementById('wrongCount').textContent = results.wrong;
+                    document.getElementById('totalCount').textContent = results.total;
+                } else {
+                    // Если не удалось получить результаты, используем локальные
+                    const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+                    document.getElementById('score').textContent = `${percentage}%`;
+                    document.getElementById('correctCount').textContent = correctAnswers;
+                    document.getElementById('wrongCount').textContent = wrongAnswers;
+                    document.getElementById('totalCount').textContent = totalQuestions;
+                }
+            } catch (error) {
+                console.error('Ошибка получения результатов:', error);
+                // Используем локальные данные
+                const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+                document.getElementById('score').textContent = `${percentage}%`;
+                document.getElementById('correctCount').textContent = correctAnswers;
+                document.getElementById('wrongCount').textContent = wrongAnswers;
+                document.getElementById('totalCount').textContent = totalQuestions;
+            }
 
             document.getElementById('trainingArea').classList.add('hidden');
             document.getElementById('resultsArea').classList.remove('hidden');
         }
 
+        // Обработчики событий
         document.querySelectorAll('.option-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (!hasAnswered) {
@@ -492,6 +562,7 @@
 
         document.getElementById('nextBtn').addEventListener('click', nextQuestion);
 
+        // Запуск тренировки
         startTraining();
     </script>
 </body>

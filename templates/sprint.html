@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Спринт - PythonMemorio</title>
+    <style>
+        :root { --primary: #667eea; --secondary: #764ba2; --success: #48bb78; --danger: #f56565; --warning: #ecc94b; --bg: #f7fafc; --card: #ffffff; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        .container { background: var(--card); border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 30px; width: 100%; max-width: 500px; text-align: center; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #edf2f7; padding-bottom: 15px; }
+        .back-btn { text-decoration: none; color: #718096; font-size: 24px; }
+
+        .level-select { margin: 20px 0; }
+        .level-btn { background: var(--primary); color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 20px; cursor: pointer; font-size: 16px; }
+        .level-btn:hover { background: var(--secondary); }
+        .level-btn.selected { background: var(--success); box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.4); }
+
+        .game-ui { display: none; }
+        .timer-bar { background: #edf2f7; border-radius: 10px; height: 12px; margin-bottom: 15px; overflow: hidden; }
+        .timer-fill { height: 100%; background: var(--primary); width: 100%; transition: width 1s linear; }
+        .timer-fill.urgent { background: var(--danger); }
+
+        .stats-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; color: #4a5568; }
+        .combo-badge { background: var(--warning); color: #744210; padding: 2px 8px; border-radius: 10px; display: none; }
+
+        .question-box { font-size: 20px; font-weight: bold; margin-bottom: 25px; color: #2d3748; min-height: 60px; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn { background: white; border: 2px solid #e2e8f0; padding: 15px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; }
+        .option-btn:hover { border-color: var(--primary); background: #ebf4ff; }
+        .option-btn.correct { background: var(--success); color: white; border-color: var(--success); }
+        .option-btn.wrong { background: var(--danger); color: white; border-color: var(--danger); }
+        .option-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .feedback { margin-top: 15px; font-weight: bold; min-height: 24px; }
+
+        .result-screen { display: none; }
+        .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .result-card { background: #edf2f7; padding: 15px; border-radius: 10px; }
+        .record-badge { color: var(--warning); font-weight: bold; font-size: 18px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <a href="/" class="back-btn">←</a>
+        <h2>⚡ Спринт</h2>
+        <div style="width: 24px;"></div>
+    </div>
+
+    <div id="setup-screen">
+        <p>Выберите уровень сложности:</p>
+        <div class="level-select" id="level-buttons">
+            <button class="level-btn" onclick="selectLevel(1)">1</button>
+            <button class="level-btn" onclick="selectLevel(2)">2</button>
+            <button class="level-btn" onclick="selectLevel(3)">3</button>
+            <button class="level-btn" onclick="selectLevel(4)">4</button>
+            <button class="level-btn" onclick="selectLevel(5)">5</button>
+        </div>
+        <p style="color: #718096; font-size: 14px;">У вас 60 секунд. Наберите максимум баллов!</p>
+        <button class="level-btn" style="width: 100%; margin-top: 15px; display: none;" id="start-btn" onclick="startSprint()">🚀 Начать спринт</button>
+    </div>
+
+    <div class="game-ui" id="game-ui">
+        <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
+        <div class="stats-row">
+            <span>⏱ <span id="timer-text">60</span>с</span>
+            <span>⭐ Баллы: <span id="score-text">0</span></span>
+            <span class="combo-badge" id="combo-badge">🔥 x2</span>
+        </div>
+        <div class="question-box" id="question-text">Загрузка...</div>
+        <div class="options" id="options-container"></div>
+        <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="result-screen" id="result-screen">
+        <h2 style="color: var(--secondary);">⏰ Время вышло!</h2>
+        <div class="result-stats">
+            <div class="result-card"><div>Верно</div><div style="font-size:24px; font-weight:bold" id="res-correct">0</div></div>
+            <div class="result-card"><div>Баллы</div><div style="font-size:24px; font-weight:bold; color:var(--success)" id="res-score">0</div></div>
+        </div>
+        <div class="record-badge" id="record-badge">🏆 Рекорд: 0</div>
+        <br>
+        <button class="level-btn" style="width: 100%;" onclick="location.reload()">🔄 Заново</button>
+        <br><br><a href="/" style="color:var(--primary)">🏠 На главную</a>
+    </div>
+</div>
+
+<script>
+    let selectedLevel = null;
+    let currentGameId = null;
+    let timerInterval = null;
+    let timeLeft = 60;
+    let currentQuestionData = null;
+
+    function selectLevel(lvl) {
+        selectedLevel = lvl;
+        document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('selected'));
+        event.target.classList.add('selected');
+        document.getElementById('start-btn').style.display = 'block';
+    }
+
+    async function startSprint() {
+        if (!selectedLevel) return;
+        document.getElementById('setup-screen').style.display = 'none';
+        document.getElementById('game-ui').style.display = 'block';
+
+        try {
+            const res = await fetch('/api/game/sprint/start', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ level: selectedLevel })
+            });
+            const data = await res.json();
+            currentGameId = data.game_id;
+            loadNextQuestion();
+            startTimer();
+        } catch (e) { alert("Ошибка старта"); }
+    }
+
+    function startTimer() {
+        updateTimerUI();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            updateTimerUI();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                finishGame();
+            }
+        }, 1000);
+    }
+
+    function updateTimerUI() {
+        const fill = document.getElementById('timer-fill');
+        fill.style.width = (timeLeft / 60 * 100) + '%';
+        document.getElementById('timer-text').textContent = timeLeft;
+        if (timeLeft <= 10) fill.classList.add('urgent');
+    }
+
+    async function loadNextQuestion() {
+        document.getElementById('feedback').textContent = '';
+        const opts = document.getElementById('options-container');
+        opts.innerHTML = '<div>Загрузка...</div>';
+
+        try {
+            const res = await fetch(`/api/game/question/${currentGameId}`);
+            const data = await res.json();
+            if (data.finished) { finishGame(); return; }
+
+            currentQuestionData = data;
+            document.getElementById('question-text').textContent = data.question;
+            opts.innerHTML = '';
+            data.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = opt;
+                btn.onclick = () => submitAnswer(opt, btn);
+                opts.appendChild(btn);
+            });
+        } catch (e) { console.error(e); }
+    }
+
+    async function submitAnswer(selectedAnswer, btnElement) {
+        const buttons = document.querySelectorAll('.option-btn');
+        buttons.forEach(b => b.disabled = true);
+
+        let isCorrect = (selectedAnswer === currentQuestionData.correct_answer);
+        if (btnElement) {
+            if (isCorrect) btnElement.classList.add('correct');
+            else {
+                btnElement.classList.add('wrong');
+                buttons.forEach(b => { if(b.textContent === currentQuestionData.correct_answer) b.classList.add('correct'); });
+            }
+        }
+
+        try {
+            const res = await fetch('/api/game/sprint/answer', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ game_id: currentGameId, word_id: currentQuestionData.word_id, answer: selectedAnswer })
+            });
+            const data = await res.json();
+
+            document.getElementById('score-text').textContent = data.sprint_score;
+            const comboBadge = document.getElementById('combo-badge');
+            if (data.combo_active) { comboBadge.style.display = 'inline-block'; } else { comboBadge.style.display = 'none'; }
+
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = isCorrect ? "✅ Верно!" : `❌ ${data.correct_answer}`;
+            feedback.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
+
+            setTimeout(loadNextQuestion, 600);
+        } catch (e) { console.error(e); }
+    }
+
+    async function finishGame() {
+        document.getElementById('game-ui').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+
+        const res = await fetch('/api/game/sprint/finish', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ game_id: currentGameId })
+        });
+        const data = await res.json();
+        document.getElementById('res-correct').textContent = data.correct;
+        document.getElementById('res-score').textContent = "+" + data.sprint_score;
+
+        const statsRes = await fetch('/api/user/stats');
+        const stats = await statsRes.json();
+        document.getElementById('record-badge').textContent = `🏆 Рекорд: ${stats.sprint_record} верных`;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ game_title }} - PythonMemorio</title>
+    <style>
+        :root {
+            --primary: #667eea; --secondary: #764ba2; --success: #48bb78;
+            --danger: #f56565; --warning: #ecc94b; --bg: #f7fafc; --card: #ffffff;
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        .container { background: var(--card); border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 30px; width: 100%; max-width: 500px; text-align: center; position: relative; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #edf2f7; padding-bottom: 15px; }
+        .back-btn { text-decoration: none; color: #718096; font-size: 24px; }
+
+        .progress-bar { background: #edf2f7; border-radius: 10px; height: 10px; margin-bottom: 20px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
+
+        .level-info { font-size: 14px; color: #4a5568; margin-bottom: 15px; font-weight: bold; }
+
+        /* Стили для Карточки */
+        .flashcard {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 20px;
+            padding: 40px 20px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s;
+            user-select: none;
+        }
+        .flashcard:active { transform: scale(0.98); }
+        .card-front { font-size: 24px; font-weight: bold; }
+        .card-back { display: none; font-size: 20px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3); width: 100%; text-align: center; }
+        .flashcard.revealed .card-front { font-size: 18px; opacity: 0.8; }
+        .flashcard.revealed .card-back { display: block; animation: fadeIn 0.3s; }
+
+        /* Стили для Викторины */
+        .question-box { font-size: 20px; font-weight: bold; margin-bottom: 25px; color: #2d3748; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn { background: white; border: 2px solid #e2e8f0; padding: 15px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; }
+        .option-btn:hover { border-color: var(--primary); background: #ebf4ff; }
+        .option-btn.correct { background: var(--success); color: white; border-color: var(--success); }
+        .option-btn.wrong { background: var(--danger); color: white; border-color: var(--danger); }
+        .option-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        .feedback { margin-top: 20px; font-weight: bold; min-height: 24px; }
+        .next-btn { margin-top: 20px; background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-size: 16px; cursor: pointer; display: none; width: 100%; }
+
+        .result-screen { display: none; }
+        .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .result-card { background: #edf2f7; padding: 15px; border-radius: 10px; }
+        .account-points { color: var(--warning); font-weight: bold; font-size: 18px; margin-top: 10px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <a href="/" class="back-btn">←</a>
+        <h2 id="game-title">{{ game_title }}</h2>
+        <div style="width: 24px;"></div>
+    </div>
+
+    <div class="level-info" id="level-info">Уровень: 1</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <div id="game-screen">
+        <!-- Режим Карточки -->
+        <div id="flashcard-mode" style="display: none;">
+            <div class="flashcard" id="flashcard" onclick="revealCard()">
+                <div class="card-front" id="card-question">Загрузка...</div>
+                <div class="card-back" id="card-answer"></div>
+            </div>
+            <div style="color: #a0aec0; font-size: 14px;" id="card-hint">👆 Нажми на карточку</div>
+        </div>
+
+        <!-- Режим Викторины -->
+        <div id="quiz-mode" style="display: none;">
+            <div class="question-box" id="question-text">Загрузка...</div>
+            <div class="options" id="options-container"></div>
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+        <button class="next-btn" id="next-btn" onclick="loadNextQuestion()">➡️ Далее</button>
+    </div>
+
+    <div class="result-screen" id="result-screen">
+        <h2 style="color: var(--secondary);">🎉 Готово!</h2>
+        <div class="result-stats">
+            <div class="result-card"><div>Верно</div><div style="font-size:24px; font-weight:bold" id="res-correct">0</div></div>
+            <div class="result-card"><div>Опыт</div><div style="font-size:24px; font-weight:bold; color:var(--success)" id="res-xp">+0</div></div>
+        </div>
+        <div class="account-points" id="res-account">+0 Баллов Аккаунта 🏆</div>
+        <br>
+        <button class="next-btn" style="display:inline-block" onclick="restartGame()">🔄 Заново</button>
+        <br><br><a href="/" style="color:var(--primary)">🏠 На главную</a>
+    </div>
+</div>
+
+<script>
+    const GAME_NAME = "{{ game_name }}";
+    let currentGameId = null;
+    let currentQuestionData = null;
+    let totalQuestions = 0;
+    let currentQuestionIndex = 0;
+
+    const progressFill = document.getElementById('progress-fill');
+    const levelInfo = document.getElementById('level-info');
+    const nextBtn = document.getElementById('next-btn');
+
+    // Настройка UI
+    if (GAME_NAME === 'cards') {
+        document.getElementById('flashcard-mode').style.display = 'block';
+        document.getElementById('game-title').innerText = "📇 Тренировка (Все уровни)";
+        document.getElementById('level-info').style.display = 'none';
+    } else {
+        document.getElementById('quiz-mode').style.display = 'block';
+    }
+
+    startGame();
+
+    async function startGame() {
+        try {
+            if (GAME_NAME !== 'cards') {
+                const progRes = await fetch(`/api/game/${GAME_NAME}/progress`);
+                const progData = await progRes.json();
+                levelInfo.textContent = `Уровень игры: ${progData.level}`;
+            }
+
+            const response = await fetch('/api/game/start', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ game_name: GAME_NAME })
+            });
+            const data = await response.json();
+            currentGameId = data.game_id;
+            totalQuestions = data.total_questions;
+            loadNextQuestion();
+        } catch (e) { console.error("Ошибка старта", e); }
+    }
+
+    function updateProgress(val) {
+        progressFill.style.width = (val / totalQuestions * 100) + '%';
+    }
+
+    async function loadNextQuestion() {
+        nextBtn.style.display = 'none';
+        document.getElementById('feedback').textContent = '';
+
+        const flashcard = document.getElementById('flashcard');
+        flashcard.classList.remove('revealed');
+        document.getElementById('card-hint').style.display = 'block';
+
+        const opts = document.getElementById('options-container');
+        opts.innerHTML = '';
+
+        try {
+            const response = await fetch(`/api/game/question/${currentGameId}`);
+            const data = await response.json();
+
+            if (data.finished) { showResults(); return; }
+
+            currentQuestionData = data;
+            currentQuestionIndex = data.question_number;
+            updateProgress(currentQuestionIndex - 1);
+
+            if (GAME_NAME === 'cards') {
+                document.getElementById('card-question').textContent = data.question;
+                document.getElementById('card-answer').textContent = data.answer;
+            } else {
+                document.getElementById('question-text').textContent = data.question;
+                data.options.forEach(opt => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = opt;
+                    btn.onclick = () => submitAnswer(opt, btn);
+                    opts.appendChild(btn);
+                });
+            }
+        } catch (e) { console.error("Ошибка", e); }
+    }
+
+    function revealCard() {
+        if (document.getElementById('flashcard').classList.contains('revealed')) return;
+
+        const flashcard = document.getElementById('flashcard');
+        flashcard.classList.add('revealed');
+        document.getElementById('card-hint').style.display = 'none';
+        nextBtn.style.display = 'inline-block';
+
+        fetch('/api/game/answer', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                game_id: currentGameId,
+                game_name: GAME_NAME,
+                word_id: currentQuestionData.word_id,
+                answer: "viewed"
+            })
+        });
+    }
+
+    async function submitAnswer(selectedAnswer, btnElement) {
+        const buttons = document.querySelectorAll('.option-btn');
+        buttons.forEach(b => b.disabled = true);
+
+        let isCorrect = (selectedAnswer === currentQuestionData.correct_answer);
+
+        if (btnElement) {
+            if (isCorrect) btnElement.classList.add('correct');
+            else {
+                btnElement.classList.add('wrong');
+                buttons.forEach(b => { if(b.textContent === currentQuestionData.correct_answer) b.classList.add('correct'); });
+            }
+        }
+
+        try {
+            const response = await fetch('/api/game/answer', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    game_id: currentGameId,
+                    game_name: GAME_NAME,
+                    word_id: currentQuestionData.word_id,
+                    answer: selectedAnswer
+                })
+            });
+            const data = await response.json();
+
+            const feedback = document.getElementById('feedback');
+            if (data.is_correct) {
+                feedback.textContent = "✅ Верно!";
+                feedback.style.color = 'var(--success)';
+            } else {
+                feedback.textContent = `❌ Неверно. ${data.correct_answer}`;
+                feedback.style.color = 'var(--danger)';
+            }
+            nextBtn.style.display = 'inline-block';
+        } catch (e) { console.error("Ошибка отправки", e); }
+    }
+
+    function showResults() {
+        document.getElementById('game-screen').style.display = 'none';
+        document.getElementById('result-screen').style.display = 'block';
+        progressFill.style.width = '100%';
+
+        fetch(`/api/game/${currentGameId}/results`)
+            .then(r => r.json())
+            .then(data => {
+                document.getElementById('res-correct').textContent = data.correct;
+                document.getElementById('res-xp').textContent = "+" + data.xp_earned;
+                document.getElementById('res-account').textContent = "+" + data.xp_earned + " Баллов Аккаунта 🏆";
+            });
+    }
+
+    function restartGame() {
+        document.getElementById('result-screen').style.display = 'none';
+        document.getElementById('game-screen').style.display = 'block';
+        startGame();
+    }
+</script>
+</body>
+</html>

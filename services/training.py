@@ -1,13 +1,19 @@
 import random
 import uuid
-from data.words import get_all_words, get_word_by_id, update_card_stats, get_random_words
+from data.words import get_all_words, update_card_stats, get_random_words
 
 training_sessions = {}
 
 
-def create_training_session(words_count=10):
+def create_training_session(words_count=10, user_words=None):
     """Создать новую тренировочную сессию"""
-    words = get_random_words(words_count)
+    if user_words is None:
+        from data.words import get_random_words
+        words = get_random_words(words_count)
+    else:
+        if words_count > len(user_words):
+            words_count = len(user_words)
+        words = random.sample(user_words, words_count)
 
     session_id = str(uuid.uuid4())[:8]
 
@@ -25,7 +31,6 @@ def create_training_session(words_count=10):
 def get_current_question(session_id):
     """Получить текущий вопрос"""
     session = training_sessions.get(session_id)
-
     if not session or session['finished']:
         return None
 
@@ -46,9 +51,7 @@ def get_current_question(session_id):
 
 def generate_question(current_word, all_words):
     """Сгенерировать вопрос с 4 вариантами ответа"""
-
     correct_translation = current_word['translation']
-
     other_translations = [
         w['translation'] for w in all_words
         if w['id'] != current_word['id']
@@ -61,7 +64,6 @@ def generate_question(current_word, all_words):
 
     wrong_options = random.sample(other_translations, 3)
 
-    # Собираем все варианты
     options = wrong_options + [correct_translation]
     random.shuffle(options)
 
@@ -75,7 +77,6 @@ def generate_question(current_word, all_words):
 def submit_answer(session_id, word_id, selected_answer):
     """Проверить ответ и обновить статистику"""
     session = training_sessions.get(session_id)
-
     if not session or session['finished']:
         return {"error": "Сессия не найдена или завершена"}
 
@@ -106,7 +107,6 @@ def submit_answer(session_id, word_id, selected_answer):
 
     if is_finished:
         session['finished'] = True
-        # Рассчитываем результат
         correct_count = sum(1 for a in session['answers'] if a['is_correct'])
         total_count = len(session['answers'])
         percentage = round((correct_count / total_count) * 100) if total_count > 0 else 0
@@ -133,7 +133,6 @@ def submit_answer(session_id, word_id, selected_answer):
 def get_session_results(session_id):
     """Получить результаты сессии"""
     session = training_sessions.get(session_id)
-
     if not session:
         return None
 
@@ -149,16 +148,54 @@ def get_session_results(session_id):
     }
 
 
-def check_answer(session_id, word_id, selected_answer):
-    """Алиас для submit_answer (для обратной совместимости)"""
-    return submit_answer(session_id, word_id, selected_answer)
+def calculate_xp_for_answer(is_correct, word_difficulty):
+    """Рассчитать опыт за ответ"""
+    if not is_correct:
+        return 0
+    xp = 10
+
+    if word_difficulty == 'hard':
+        xp += 15
+    elif word_difficulty == 'medium':
+        xp += 10
+    elif word_difficulty == 'easy':
+        xp += 5
+    elif word_difficulty == 'new':
+        xp += 8
+
+    return xp
+
+
+def get_words_by_level(level, user_words):
+    """Получить слова для текущего уровня"""
+
+    def get_difficulty(word):
+        total = word.get('correct', 0) + word.get('wrong', 0)
+        if total == 0:
+            return 'new'
+        elif word.get('correct', 0) / total >= 0.8:
+            return 'easy'
+        elif word.get('correct', 0) / total >= 0.5:
+            return 'medium'
+        else:
+            return 'hard'
+
+    if level <= 1:
+        filtered = [w for w in user_words if get_difficulty(w) in ['new', 'easy']]
+    elif level == 2:
+        filtered = [w for w in user_words if get_difficulty(w) in ['new', 'easy', 'medium']]
+    else:
+        filtered = user_words
+
+    if len(filtered) < 3:
+        return user_words[:10]
+
+    return filtered
 
 
 def get_training_words(count=10):
-    """Получить слова для тренировки"""
     return get_random_words(count)
 
 
 def get_next_question(session_id):
-    """Получить следующий вопрос (алиас)"""
     return get_current_question(session_id)

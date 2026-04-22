@@ -3,103 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Запоминалка</title>
-
-    <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#764ba2">
-
+    <title>PythonMemorio - Главное меню</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            text-align: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: white;
+        :root {
+            --primary: #667eea; --secondary: #764ba2; --success: #48bb78;
+            --warning: #ecc94b; --danger: #f56565; --bg: #f7fafc; --card: #ffffff;
         }
-        h1 {
-            margin-top: 50px;
-            font-size: 2.5em;
-        }
-        .button {
-            display: inline-block;
-            margin: 20px;
-            padding: 15px 30px;
-            background: white;
-            color: #764ba2;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-        .button:hover {
-            transform: scale(1.05);
-        }
-        .info {
-            margin-top: 40px;
-            padding: 20px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-            font-size: 14px;
-        }
-        .install-btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-        }
-        .install-btn:hover {
-            background: rgba(255,255,255,0.3);
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); margin: 0; padding: 20px; min-height: 100vh; }
+        .container { max-width: 800px; margin: 0 auto; }
+
+        .header { background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .user-info { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
+
+        .account-badge { background: var(--warning); color: #744210; padding: 5px 15px; border-radius: 20px; font-weight: bold; }
+        .points-badge { background: #edf2f7; border-radius: 10px; padding: 5px 15px; font-size: 14px; }
+
+        .logout-btn { background: var(--danger); color: white; text-decoration: none; padding: 8px 15px; border-radius: 8px; font-size: 14px; }
+
+        .title-section { text-align: center; color: white; margin-bottom: 30px; }
+        .title-section h1 { margin: 0; font-size: 32px; text-shadow: 2px 2px 4px rgba(0,0,0,0.2); }
+        .title-section p { margin: 10px 0; font-size: 18px; opacity: 0.9; }
+
+        .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px; }
+        .game-card { background: var(--card); border-radius: 15px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s; }
+        .game-card:hover { transform: translateY(-5px); }
+        .game-icon { font-size: 48px; margin-bottom: 15px; }
+        .game-title { font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #2d3748; }
+        .game-description { color: #718096; font-size: 14px; margin-bottom: 15px; line-height: 1.5; }
+        .game-status { display: inline-block; padding: 5px 12px; border-radius: 15px; font-size: 12px; font-weight: bold; margin-bottom: 15px; }
+        .status-available { background: #c6f6d5; color: #22543d; }
+        .play-btn { display: inline-block; background: var(--primary); color: white; text-decoration: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; transition: background 0.2s; }
+        .play-btn:hover { background: var(--secondary); }
+
+        .stats-section { background: var(--card); border-radius: 15px; padding: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .stats-section h2 { margin-top: 0; color: #2d3748; margin-bottom: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
+        .stat-card { background: #edf2f7; padding: 15px; border-radius: 10px; text-align: center; }
+        .stat-value { font-size: 24px; font-weight: bold; color: var(--primary); }
+        .stat-label { color: #718096; font-size: 12px; margin-top: 5px; }
     </style>
 </head>
 <body>
-    <h1>🧠 Запоминалка</h1>
-    <p>Приложение для умного запоминания слов</p>
 
-    <a href="/study" class="button">Начать тренировку</a>
-
-    <div class="info">
-        <strong>📱 Как это работает</strong><br>
-        • Нажимай на карточку, чтобы увидеть перевод<br>
-        • Оценивай, знаешь ты слово или нет<br>
-        • Приложение запоминает твой прогресс<br>
-        <button id="installBtn" class="install-btn" style="display: none;">
-            📲 Установить приложение
-        </button>
+<div class="container">
+    <div class="header">
+        <div class="user-info">
+            <div class="account-badge">🏆 Аккаунт: Ур. <span id="acc-level">1</span></div>
+            <div class="points-badge">💰 Баллы: <span id="acc-points">0</span></div>
+        </div>
+        <a href="/logout" class="logout-btn">🚪 Выйти</a>
     </div>
 
-    <script>
-        let deferredPrompt;
+    <div class="title-section">
+        <h1>🐍 PythonMemorio</h1>
+        <p>Учи Python, играя!</p>
+    </div>
 
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            const installBtn = document.getElementById('installBtn');
-            installBtn.style.display = 'inline-block';
+    <div class="games-grid">
+        <div class="game-card">
+            <div class="game-icon">📇</div>
+            <div class="game-title">Карточки</div>
+            <div class="game-description">Режим изучения. Нажми на карточку, чтобы узнать ответ. Без таймеров.</div>
+            <span class="game-status status-available">✅ Доступно</span>
+            <br>
+            <a href="/game/cards" class="play-btn">🎮 Учить</a>
+        </div>
 
-            installBtn.addEventListener('click', async () => {
-                deferredPrompt.prompt();
-                const { outcome } = await deferredPrompt.userChoice;
-                console.log(`Пользователь ${outcome === 'accepted' ? 'установил' : 'отклонил'} приложение`);
-                installBtn.style.display = 'none';
-                deferredPrompt = null;
-            });
-        });
+        <div class="game-card">
+            <div class="game-icon">❓</div>
+            <div class="game-title">Викторина</div>
+            <div class="game-description">10 вопросов. Теория и практика. Получай опыт и баллы аккаунта!</div>
+            <span class="game-status status-available">✅ Доступно</span>
+            <br>
+            <a href="/game/quiz" class="play-btn">🎮 Играть</a>
+        </div>
 
-        window.addEventListener('appinstalled', () => {
-            console.log('✅ PWA установлено');
-            document.getElementById('installBtn').style.display = 'none';
-        });
-    </script>
+        <div class="game-card">
+            <div class="game-icon">⚡</div>
+            <div class="game-title">Спринт</div>
+            <div class="game-description">60 секунд. Выбери уровень сложности. Максимум баллов за скорость!</div>
+            <span class="game-status status-available">✅ Доступно</span>
+            <br>
+            <a href="/game/sprint" class="play-btn">🎮 Играть</a>
+        </div>
+    </div>
+
+    <div class="stats-section">
+        <h2>📊 Ваша статистика</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="stat-quiz">0</div>
+                <div class="stat-label">Викторин сыграно</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-correct">0</div>
+                <div class="stat-label">Верных ответов</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-wrong">0</div>
+                <div class="stat-label">Ошибок</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="stat-rate">0%</div>
+                <div class="stat-label">Успешность</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Загрузка статистики аккаунта
+    fetch('/api/user/stats')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('acc-level').textContent = data.account_level;
+            document.getElementById('acc-points').textContent = data.account_points;
+
+            document.getElementById('stat-quiz').textContent = data.quiz_played;
+            document.getElementById('stat-correct').textContent = data.total_correct;
+            document.getElementById('stat-wrong').textContent = data.total_wrong;
+            document.getElementById('stat-rate').textContent = data.success_rate + '%';
+        })
+        .catch(err => console.error('Ошибка загрузки статистики:', err));
+</script>
+
 </body>
 </html>
