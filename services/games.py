@@ -86,21 +86,42 @@ def submit_answer(game_id, word_id, selected_answer):
     if not game or game['finished']:
         return {"error": "Игра не найдена"}
 
-    if game['game_type'] == 'cards':
-        game['current_index'] += 1
-        return {"finished": game['current_index'] >= len(game['questions']), "type": "cards"}
-
+    # Ищем текущее слово
     current_word = None
     for word in game['questions']:
         if word.get('id') == word_id:
             current_word = word
             break
+
     if not current_word:
         return {"error": "Вопрос не найден"}
 
     correct_ans = current_word.get('translation')
+
+    # Для карточек - просто переходим дальше
+    if game['game_type'] == 'cards':
+        game['current_index'] += 1
+        # Сохраняем просмотр как факт
+        game['answers'].append({
+            'word_id': word_id,
+            'word': current_word.get('word'),
+            'is_correct': None,
+            'user_answer': 'viewed',
+            'correct_answer': correct_ans
+        })
+        return {"finished": game['current_index'] >= len(game['questions']), "type": "cards"}
+
     is_correct = (selected_answer == correct_ans)
-    game['answers'].append({'is_correct': is_correct})
+
+    # Сохраняем ответ с полной информацией
+    game['answers'].append({
+        'word_id': word_id,
+        'word': current_word.get('word'),
+        'is_correct': is_correct,
+        'user_answer': selected_answer,
+        'correct_answer': correct_ans
+    })
+
     game['current_index'] += 1
 
     if game['game_type'] == 'sprint':
@@ -163,7 +184,8 @@ def submit_answer(game_id, word_id, selected_answer):
 
 def finish_sprint(game_id):
     game = active_games.get(game_id)
-    if not game: return None
+    if not game:
+        return None
     game['finished'] = True
     return {
         "sprint_score": game['sprint_score'],
@@ -174,7 +196,8 @@ def finish_sprint(game_id):
 
 def get_game_results(game_id):
     game = active_games.get(game_id)
-    if not game: return None
+    if not game:
+        return None
     return {
         "correct": game['correct_count'],
         "wrong": game['wrong_count'],

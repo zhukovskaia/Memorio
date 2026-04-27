@@ -58,6 +58,27 @@
         .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .result-card { background: #edf2f7; padding: 15px; border-radius: 10px; }
         .account-points { color: var(--warning); font-weight: bold; font-size: 18px; margin-top: 10px; }
+
+        /* Стиль для SRS напоминания */
+        .srs-reminder {
+            background: #fed7d7;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            color: #c53030;
+            animation: fadeIn 0.5s;
+        }
+        .srs-reminder a {
+            color: #c53030;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .srs-reminder a:hover {
+            text-decoration: underline;
+        }
+
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
@@ -99,6 +120,7 @@
             <div class="result-card"><div>Опыт</div><div style="font-size:24px; font-weight:bold; color:var(--success)" id="res-xp">+0</div></div>
         </div>
         <div class="account-points" id="res-account">+0 Баллов Аккаунта 🏆</div>
+        <div id="srs-reminder-container"></div>
         <br>
         <button class="next-btn" style="display:inline-block" onclick="restartGame()">🔄 Заново</button>
         <br><br><a href="/" style="color:var(--primary)">🏠 На главную</a>
@@ -258,12 +280,45 @@
                 document.getElementById('res-correct').textContent = data.correct;
                 document.getElementById('res-xp').textContent = "+" + data.xp_earned;
                 document.getElementById('res-account').textContent = "+" + data.xp_earned + " Баллов Аккаунта 🏆";
+
+                // Обновляем SRS после игры
+                updateSrsAfterGame();
             });
+    }
+
+    // Функция обновления SRS после игры
+    function updateSrsAfterGame() {
+        fetch('/api/srs/stats')
+            .then(r => r.json())
+            .then(stats => {
+                const reminderContainer = document.getElementById('srs-reminder-container');
+                if (stats.due_now > 0) {
+                    // Показываем сообщение о необходимости повторения
+                    reminderContainer.innerHTML = `
+                        <div class="srs-reminder">
+                            <strong>⚠️ Не забудьте повторить слова!</strong><br>
+                            ${stats.due_now} слов требуют повторения.
+                            <br>
+                            <a href="/">🔔 Перейти к повторению</a>
+                        </div>
+                    `;
+                } else if (stats.due_today > 0) {
+                    reminderContainer.innerHTML = `
+                        <div class="srs-reminder" style="background: #fefcbf; color: #975a16;">
+                            <strong>📅 Сегодня нужно повторить ${stats.due_today} слов</strong>
+                            <br>
+                            <a href="/" style="color: #975a16;">🔔 Перейти к повторению</a>
+                        </div>
+                    `;
+                }
+            })
+            .catch(err => console.error('Ошибка загрузки SRS статистики:', err));
     }
 
     function restartGame() {
         document.getElementById('result-screen').style.display = 'none';
         document.getElementById('game-screen').style.display = 'block';
+        document.getElementById('srs-reminder-container').innerHTML = '';
         startGame();
     }
 </script>

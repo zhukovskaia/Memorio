@@ -38,6 +38,27 @@
         .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
         .result-card { background: #edf2f7; padding: 15px; border-radius: 10px; }
         .record-badge { color: var(--warning); font-weight: bold; font-size: 18px; margin-top: 10px; }
+
+        /* Стиль для SRS напоминания */
+        .srs-reminder {
+            background: #fed7d7;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            color: #c53030;
+            animation: fadeIn 0.5s;
+        }
+        .srs-reminder a {
+            color: #c53030;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        .srs-reminder a:hover {
+            text-decoration: underline;
+        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -80,6 +101,7 @@
             <div class="result-card"><div>Баллы</div><div style="font-size:24px; font-weight:bold; color:var(--success)" id="res-score">0</div></div>
         </div>
         <div class="record-badge" id="record-badge">🏆 Рекорд: 0</div>
+        <div id="srs-reminder-container"></div>
         <br>
         <button class="level-btn" style="width: 100%;" onclick="location.reload()">🔄 Заново</button>
         <br><br><a href="/" style="color:var(--primary)">🏠 На главную</a>
@@ -209,6 +231,37 @@
         const statsRes = await fetch('/api/user/stats');
         const stats = await statsRes.json();
         document.getElementById('record-badge').textContent = `🏆 Рекорд: ${stats.sprint_record} верных`;
+
+        // Обновляем SRS после спринта
+        updateSrsAfterGame();
+    }
+
+    // Функция обновления SRS после игры
+    function updateSrsAfterGame() {
+        fetch('/api/srs/stats')
+            .then(r => r.json())
+            .then(stats => {
+                const reminderContainer = document.getElementById('srs-reminder-container');
+                if (stats.due_now > 0) {
+                    reminderContainer.innerHTML = `
+                        <div class="srs-reminder">
+                            <strong>⚠️ Не забудьте повторить слова!</strong><br>
+                            ${stats.due_now} слов требуют повторения.
+                            <br>
+                            <a href="/">🔔 Перейти к повторению</a>
+                        </div>
+                    `;
+                } else if (stats.due_today > 0) {
+                    reminderContainer.innerHTML = `
+                        <div class="srs-reminder" style="background: #fefcbf; color: #975a16;">
+                            <strong>📅 Сегодня нужно повторить ${stats.due_today} слов</strong>
+                            <br>
+                            <a href="/" style="color: #975a16;">🔔 Перейти к повторению</a>
+                        </div>
+                    `;
+                }
+            })
+            .catch(err => console.error('Ошибка загрузки SRS статистики:', err));
     }
 </script>
 </body>
