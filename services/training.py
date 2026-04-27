@@ -1,19 +1,23 @@
 import random
 import uuid
-from data.words import get_all_words, update_card_stats, get_random_words
+from datetime import datetime
+from data.words import update_card_stats, get_random_words, CARD_QUESTIONS
+from services.notifications import schedule_srs_review
 
 training_sessions = {}
 
 
-def create_training_session(words_count=10, user_words=None):
+def create_training_session(words_count=10, user_words=None, username=None):
     """Создать новую тренировочную сессию"""
     if user_words is None:
-        from data.words import get_random_words
         words = get_random_words(words_count)
     else:
         if words_count > len(user_words):
             words_count = len(user_words)
-        words = random.sample(user_words, words_count)
+        if words_count == 0:
+            words = []
+        else:
+            words = random.sample(user_words, min(words_count, len(user_words)))
 
     session_id = str(uuid.uuid4())[:8]
 
@@ -22,7 +26,9 @@ def create_training_session(words_count=10, user_words=None):
         'words': words,
         'current_index': 0,
         'answers': [],
-        'finished': False
+        'finished': False,
+        'username': username,
+        'created_at': datetime.now().isoformat()
     }
 
     return training_sessions[session_id]
@@ -40,11 +46,14 @@ def get_current_question(session_id):
 
     current_word = session['words'][session['current_index']]
 
-    all_words = get_all_words()
+    # Используем CARD_QUESTIONS как общий список слов для вариантов ответов
+    all_words = CARD_QUESTIONS
     question = generate_question(current_word, all_words)
+
     question['word_id'] = current_word['id']
     question['question_number'] = session['current_index'] + 1
     question['total_questions'] = len(session['words'])
+    question['current_streak'] = current_word.get('srs_streak', 0)
 
     return question
 
@@ -56,26 +65,26 @@ def generate_question(current_word, all_words):
         w['translation'] for w in all_words
         if w['id'] != current_word['id']
     ]
-
     other_translations = list(set(other_translations))
 
     while len(other_translations) < 3:
         other_translations.append("???")
 
-    wrong_options = random.sample(other_translations, 3)
-
+    wrong_options = random.sample(other_translations, min(3, len(other_translations)))
     options = wrong_options + [correct_translation]
     random.shuffle(options)
 
     return {
         "question": current_word['word'],
         "correct_answer": correct_translation,
-        "options": options
+        "options": options,
+        "difficulty": current_word.get('difficulty', 'easy'),
+        "word_id": current_word['id']
     }
 
 
 def submit_answer(session_id, word_id, selected_answer):
-    """Проверить ответ и обновить статистику"""
+    """Проверить ответ и обновить статистику + запланировать SRS"""
     session = training_sessions.get(session_id)
     if not session or session['finished']:
         return {"error": "Сессия не найдена или завершена"}
@@ -90,16 +99,37 @@ def submit_answer(session_id, word_id, selected_answer):
         return {"error": "Слово не найдено"}
 
     is_correct = (selected_answer == current_word['translation'])
+    current_streak = current_word.get('srs_streak', 0)
 
     session['answers'].append({
         'word_id': word_id,
         'word': current_word['word'],
         'translation': current_word['translation'],
         'selected': selected_answer,
-        'is_correct': is_correct
+        'is_correct': is_correct,
+        'timestamp': datetime.now().isoformat()
     })
 
-    update_card_stats(word_id, is_correct)
+    # Обновляем статистику в words_data.json
+    try:
+        update_card_stats(word_id, is_correct)
+    except Exception as e:
+        print(f"Ошибка обновления статистики слова: {e}")
+
+    srs_info = None
+    username = session.get('username')
+
+    if username:
+        try:
+            srs_info = schedule_srs_review(
+                username=username,
+                word_id=word_id,
+                word_text=current_word['word'],
+                streak=current_streak,
+                is_correct=is_correct
+            )
+        except Exception as e:
+            print(f"Ошибка создания SRS уведомления: {e}")
 
     session['current_index'] += 1
 
@@ -115,6 +145,7 @@ def submit_answer(session_id, word_id, selected_answer):
             "is_correct": is_correct,
             "correct_answer": current_word['translation'],
             "finished": True,
+            "srs_scheduled": srs_info,
             "results": {
                 "correct": correct_count,
                 "wrong": total_count - correct_count,
@@ -126,7 +157,9 @@ def submit_answer(session_id, word_id, selected_answer):
     return {
         "is_correct": is_correct,
         "correct_answer": current_word['translation'],
-        "finished": False
+        "finished": False,
+        "srs_scheduled": srs_info,
+        "next_review_in": srs_info['days_until_review'] if srs_info else None
     }
 
 
@@ -144,7 +177,8 @@ def get_session_results(session_id):
         "wrong": total_count - correct_count,
         "total": total_count,
         "percentage": round((correct_count / total_count) * 100) if total_count > 0 else 0,
-        "answers": session['answers']
+        "answers": session['answers'],
+        "session_id": session_id
     }
 
 
@@ -152,8 +186,8 @@ def calculate_xp_for_answer(is_correct, word_difficulty):
     """Рассчитать опыт за ответ"""
     if not is_correct:
         return 0
-    xp = 10
 
+    xp = 10
     if word_difficulty == 'hard':
         xp += 15
     elif word_difficulty == 'medium':
@@ -199,3 +233,23 @@ def get_training_words(count=10):
 
 def get_next_question(session_id):
     return get_current_question(session_id)
+
+
+def get_due_words_for_review(username, user_words, max_words=None):
+    """Получить ТОЛЬКО просроченные слова (due_now)"""
+    from services.notifications import get_due_notifications
+
+    due_notifications = get_due_notifications(username)
+
+    # Получаем ID слов, которые нужно повторить прямо сейчас
+    due_word_ids = {notif['word_id'] for notif in due_notifications if notif.get('word_id')}
+
+    # Фильтруем слова пользователя - только просроченные
+    due_words = [w for w in user_words if w['id'] in due_word_ids]
+
+    print(f"[SRS REVIEW] Найдено просроченных слов: {len(due_words)} из {len(user_words)} всего")
+
+    if max_words and len(due_words) > max_words:
+        return random.sample(due_words, max_words)
+
+    return due_words

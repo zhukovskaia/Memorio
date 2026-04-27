@@ -1,442 +1,607 @@
 [
- {
-  "id": 1,
-  "word": "PEP 8",
-  "translation": "Стандарт написания кода на Python",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 2,
-  "word": "Переменная",
-  "translation": "Именованное хранилище для данных",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 3,
-  "word": "Функция",
-  "translation": "Блок кода, который выполняется при вызове",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 4,
-  "word": "Цикл for",
-  "translation": "Итерация по элементам последовательности",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 5,
-  "word": "Цикл while",
-  "translation": "Повторение кода пока условие истинно",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 6,
-  "word": "Условный оператор if",
-  "translation": "Выполнение кода при выполнении условия",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 7,
-  "word": "Список (list)",
-  "translation": "Изменяемая упорядоченная коллекция",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 8,
-  "word": "Словарь (dict)",
-  "translation": "Коллекция пар ключ-значение",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 9,
-  "word": "Кортеж (tuple)",
-  "translation": "Неизменяемая упорядоченная коллекция",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 10,
-  "word": "Множество (set)",
-  "translation": "Коллекция уникальных элементов",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 11,
-  "word": "Комментарий",
-  "translation": "Текст, игнорируемый интерпретатором, начинается с #",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 12,
-  "word": "print()",
-  "translation": "Функция для вывода данных на экран",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 13,
-  "word": "input()",
-  "translation": "Функция для получения ввода от пользователя",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 14,
-  "word": "int()",
-  "translation": "Преобразование в целое число",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 15,
-  "word": "str()",
-  "translation": "Преобразование в строку",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 16,
-  "word": "len()",
-  "translation": "Возвращает длину объекта",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 17,
-  "word": "range()",
-  "translation": "Генерирует последовательность чисел",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 18,
-  "word": "append()",
-  "translation": "Добавляет элемент в конец списка",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 19,
-  "word": "Ключевое слово def",
-  "translation": "Используется для определения функции",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 20,
-  "word": "Ключевое слово return",
-  "translation": "Возвращает значение из функции",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 21,
-  "word": "Ключевое слово break",
-  "translation": "Прерывает выполнение цикла",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 22,
-  "word": "Ключевое слово continue",
-  "translation": "Переходит к следующей итерации цикла",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 23,
-  "word": "None",
-  "translation": "Обозначает отсутствие значения",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 24,
-  "word": "True/False",
-  "translation": "Булевы значения (истина/ложь)",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 25,
-  "word": "Оператор ==",
-  "translation": "Сравнение на равенство",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 26,
-  "word": "Оператор !=",
-  "translation": "Сравнение на неравенство",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 27,
-  "word": "Оператор and",
-  "translation": "Логическое И",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 28,
-  "word": "Оператор or",
-  "translation": "Логическое ИЛИ",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 29,
-  "word": "Индексация",
-  "translation": "Доступ к элементу по его позиции (начинается с 0)",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 30,
-  "word": "Срез (slice)",
-  "translation": "Получение подмножества элементов [start:stop:step]",
-  "difficulty": "easy",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 31,
-  "word": "Класс",
-  "translation": "Шаблон для создания объектов, определяет свойства и методы",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 32,
-  "word": "Объект",
-  "translation": "Экземпляр класса, имеющий состояние и поведение",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 33,
-  "word": "Наследование",
-  "translation": "Механизм, позволяющий классу перенимать свойства и методы другого класса",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 34,
-  "word": "Полиморфизм",
-  "translation": "Способность объектов разных классов использовать один и тот же интерфейс",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 35,
-  "word": "Инкапсуляция",
-  "translation": "Сокрытие внутренней реализации объекта от внешнего мира",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 36,
-  "word": "Декоратор",
-  "translation": "Функция, которая оборачивает другую функцию для расширения функциональности",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 37,
-  "word": "Генератор",
-  "translation": "Функция, которая возвращает итератор с помощью ключевого слова yield",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 38,
-  "word": "Итератор",
-  "translation": "Объект с методами __iter__() и __next__() для перебора элементов",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 39,
-  "word": "Рекурсия",
-  "translation": "Функция, вызывающая саму себя для решения задачи",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 40,
-  "word": "Лямбда-функция",
-  "translation": "Анонимная функция, определяемая в одну строку с помощью lambda",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 41,
-  "word": "Исключение",
-  "translation": "Ошибка, возникающая во время выполнения программы",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 42,
-  "word": "try/except",
-  "translation": "Конструкция для обработки исключений",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 43,
-  "word": "Модуль",
-  "translation": "Файл с кодом Python, который можно импортировать",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 44,
-  "word": "Пакет",
-  "translation": "Директория с файлом __init__.py, содержащая модули",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 45,
-  "word": "Виртуальное окружение",
-  "translation": "Изолированная среда для управления зависимостями проекта",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 46,
-  "word": "pip",
-  "translation": "Менеджер пакетов для установки библиотек Python",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 47,
-  "word": "Type Hints",
-  "translation": "Аннотации типов, указывающие ожидаемый тип переменной",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 48,
-  "word": "Асинхронность",
-  "translation": "Парадигма для выполнения операций без блокировки потока (async/await)",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 49,
-  "word": "GIL (Global Interpreter Lock)",
-  "translation": "Механизм, позволяющий выполнять только один поток Python за раз",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 50,
-  "word": "Dunder методы",
-  "translation": "Специальные методы с двойным подчеркиванием (__init__, __str__)",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 51,
-  "word": "List Comprehension",
-  "translation": "Лаконичный способ создания списков в одну строку",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 52,
-  "word": "Документация (docstring)",
-  "translation": "Строка документации, описывающая функцию, класс или модуль",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 53,
-  "word": "Фреймворк",
-  "translation": "Готовый набор инструментов для разработки приложений (Django, Flask)",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 54,
-  "word": "Декоратор @property",
-  "translation": "Позволяет обращаться к методу как к атрибуту",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- },
- {
-  "id": 55,
-  "word": "Метакласс",
-  "translation": "Класс, который создает другие классы",
-  "difficulty": "hard",
-  "correct": 0,
-  "wrong": 0
- }
+  {
+    "id": 1,
+    "word": "PEP 8",
+    "translation": "Стандарт написания кода на Python",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:06.928695",
+    "next_review": "2026-04-30T19:50:06.928742"
+  },
+  {
+    "id": 2,
+    "word": "Переменная",
+    "translation": "Именованное хранилище для данных",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:46:42.957276",
+    "next_review": "2026-04-30T19:46:42.957300"
+  },
+  {
+    "id": 3,
+    "word": "Функция",
+    "translation": "Блок кода, который выполняется при вызове",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:20.984924",
+    "next_review": "2026-04-30T19:50:20.984943"
+  },
+  {
+    "id": 4,
+    "word": "Цикл for",
+    "translation": "Итерация по элементам последовательности",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:16.040948",
+    "next_review": "2026-04-30T19:50:16.040965"
+  },
+  {
+    "id": 5,
+    "word": "Цикл while",
+    "translation": "Повторение кода пока условие истинно",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 1,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:11.106419",
+    "next_review": "2026-04-30T19:50:11.106450"
+  },
+  {
+    "id": 6,
+    "word": "Условный оператор if",
+    "translation": "Выполнение кода при выполнении условия",
+    "difficulty": "easy",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 7,
+    "word": "Список (list)",
+    "translation": "Изменяемая упорядоченная коллекция",
+    "difficulty": "easy",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 8,
+    "word": "Словарь (dict)",
+    "translation": "Коллекция пар ключ-значение",
+    "difficulty": "easy",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 9,
+    "word": "Кортеж (tuple)",
+    "translation": "Неизменяемая упорядоченная коллекция",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 1,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:43.888914",
+    "next_review": "2026-04-30T19:50:43.888972"
+  },
+  {
+    "id": 10,
+    "word": "Множество (set)",
+    "translation": "Коллекция уникальных элементов",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:23.457154",
+    "next_review": "2026-04-30T19:50:23.457169"
+  },
+  {
+    "id": 11,
+    "word": "Комментарий",
+    "translation": "Текст, игнорируемый интерпретатором, начинается с #",
+    "difficulty": "easy",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 12,
+    "word": "print()",
+    "translation": "Функция для вывода данных на экран",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 1,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:46.601017",
+    "next_review": "2026-04-30T19:50:46.601026"
+  },
+  {
+    "id": 13,
+    "word": "input()",
+    "translation": "Функция для получения ввода от пользователя",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:46:59.004530",
+    "next_review": "2026-04-30T19:46:59.004569"
+  },
+  {
+    "id": 14,
+    "word": "int()",
+    "translation": "Преобразование в целое число",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 1,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:19.534864",
+    "next_review": "2026-04-30T19:50:19.534898"
+  },
+  {
+    "id": 15,
+    "word": "str()",
+    "translation": "Преобразование в строку",
+    "difficulty": "easy",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 16,
+    "word": "len()",
+    "translation": "Возвращает длину объекта",
+    "difficulty": "easy",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 17,
+    "word": "range()",
+    "translation": "Генерирует последовательность чисел",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 1,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:59:14.832654",
+    "next_review": "2026-04-30T19:59:14.832666"
+  },
+  {
+    "id": 18,
+    "word": "append()",
+    "translation": "Добавляет элемент в конец списка",
+    "difficulty": "easy",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 19,
+    "word": "Ключевое слово def",
+    "translation": "Используется для определения функции",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:47:16.601737",
+    "next_review": "2026-04-30T19:47:16.601758"
+  },
+  {
+    "id": 20,
+    "word": "Ключевое слово return",
+    "translation": "Возвращает значение из функции",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:17.478983",
+    "next_review": "2026-04-30T19:50:17.479024"
+  },
+  {
+    "id": 21,
+    "word": "Ключевое слово break",
+    "translation": "Прерывает выполнение цикла",
+    "difficulty": "easy",
+    "correct": 2,
+    "wrong": 1,
+    "srs_streak": 2,
+    "last_reviewed": "2026-04-27T19:59:00.185649",
+    "next_review": "2026-05-04T19:59:00.185666"
+  },
+  {
+    "id": 22,
+    "word": "Ключевое слово continue",
+    "translation": "Переходит к следующей итерации цикла",
+    "difficulty": "easy",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 23,
+    "word": "None",
+    "translation": "Обозначает отсутствие значения",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:42.466756",
+    "next_review": "2026-04-30T19:50:42.466768"
+  },
+  {
+    "id": 24,
+    "word": "True/False",
+    "translation": "Булевы значения (истина/ложь)",
+    "difficulty": "easy",
+    "correct": 2,
+    "wrong": 0,
+    "srs_streak": 2,
+    "last_reviewed": "2026-04-27T19:59:01.564903",
+    "next_review": "2026-05-04T19:59:01.564923"
+  },
+  {
+    "id": 25,
+    "word": "Оператор ==",
+    "translation": "Сравнение на равенство",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:41.020118",
+    "next_review": "2026-04-30T19:50:41.020133"
+  },
+  {
+    "id": 26,
+    "word": "Оператор !=",
+    "translation": "Сравнение на неравенство",
+    "difficulty": "easy",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 27,
+    "word": "Оператор and",
+    "translation": "Логическое И",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:50:49.252782",
+    "next_review": "2026-04-30T19:50:49.252802"
+  },
+  {
+    "id": 28,
+    "word": "Оператор or",
+    "translation": "Логическое ИЛИ",
+    "difficulty": "easy",
+    "correct": 2,
+    "wrong": 1,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:59:12.004169",
+    "next_review": "2026-04-30T19:59:12.004194"
+  },
+  {
+    "id": 29,
+    "word": "Индексация",
+    "translation": "Доступ к элементу по его позиции (начинается с 0)",
+    "difficulty": "easy",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:59:04.347219",
+    "next_review": "2026-04-30T19:59:04.347235"
+  },
+  {
+    "id": 30,
+    "word": "Срез (slice)",
+    "translation": "Получение подмножества элементов [start:stop:step]",
+    "difficulty": "easy",
+    "correct": 2,
+    "wrong": 1,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:59:13.431108",
+    "next_review": "2026-04-30T19:59:13.431121"
+  },
+  {
+    "id": 31,
+    "word": "Класс",
+    "translation": "Шаблон для создания объектов, определяет свойства и методы",
+    "difficulty": "hard",
+    "correct": 2,
+    "wrong": 0,
+    "srs_streak": 2,
+    "last_reviewed": "2026-04-27T19:58:54.252961",
+    "next_review": "2026-05-04T19:58:54.252983"
+  },
+  {
+    "id": 32,
+    "word": "Объект",
+    "translation": "Экземпляр класса, имеющий состояние и поведение",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 33,
+    "word": "Наследование",
+    "translation": "Механизм, позволяющий классу перенимать свойства и методы другого класса",
+    "difficulty": "hard",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:51:03.440350",
+    "next_review": "2026-04-30T19:51:03.440370"
+  },
+  {
+    "id": 34,
+    "word": "Полиморфизм",
+    "translation": "Способность объектов разных классов использовать один и тот же интерфейс",
+    "difficulty": "hard",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:51:01.621727",
+    "next_review": "2026-04-30T19:51:01.621739"
+  },
+  {
+    "id": 35,
+    "word": "Инкапсуляция",
+    "translation": "Сокрытие внутренней реализации объекта от внешнего мира",
+    "difficulty": "hard",
+    "correct": 1,
+    "wrong": 0,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T19:58:58.577168",
+    "next_review": "2026-04-30T19:58:58.577190"
+  },
+  {
+    "id": 36,
+    "word": "Декоратор",
+    "translation": "Функция, которая оборачивает другую функцию для расширения функциональности",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 37,
+    "word": "Генератор",
+    "translation": "Функция, которая возвращает итератор с помощью ключевого слова yield",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 38,
+    "word": "Итератор",
+    "translation": "Объект с методами __iter__() и __next__() для перебора элементов",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 39,
+    "word": "Рекурсия",
+    "translation": "Функция, вызывающая саму себя для решения задачи",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 40,
+    "word": "Лямбда-функция",
+    "translation": "Анонимная функция, определяемая в одну строку с помощью lambda",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 41,
+    "word": "Исключение",
+    "translation": "Ошибка, возникающая во время выполнения программы",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 42,
+    "word": "try/except",
+    "translation": "Конструкция для обработки исключений",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 43,
+    "word": "Модуль",
+    "translation": "Файл с кодом Python, который можно импортировать",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 44,
+    "word": "Пакет",
+    "translation": "Директория с файлом __init__.py, содержащая модули",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 45,
+    "word": "Виртуальное окружение",
+    "translation": "Изолированная среда для управления зависимостями проекта",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 46,
+    "word": "pip",
+    "translation": "Менеджер пакетов для установки библиотек Python",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 47,
+    "word": "Type Hints",
+    "translation": "Аннотации типов, указывающие ожидаемый тип переменной",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 48,
+    "word": "Асинхронность",
+    "translation": "Парадигма для выполнения операций без блокировки потока (async/await)",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 49,
+    "word": "GIL (Global Interpreter Lock)",
+    "translation": "Механизм, позволяющий выполнять только один поток Python за раз",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 50,
+    "word": "Dunder методы",
+    "translation": "Специальные методы с двойным подчеркиванием (__init__, __str__)",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 51,
+    "word": "List Comprehension",
+    "translation": "Лаконичный способ создания списков в одну строку",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 52,
+    "word": "Документация (docstring)",
+    "translation": "Строка документации, описывающая функцию, класс или модуль",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 53,
+    "word": "Фреймворк",
+    "translation": "Готовый набор инструментов для разработки приложений (Django, Flask)",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 54,
+    "word": "Декоратор @property",
+    "translation": "Позволяет обращаться к методу как к атрибуту",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  },
+  {
+    "id": 55,
+    "word": "Метакласс",
+    "translation": "Класс, который создает другие классы",
+    "difficulty": "hard",
+    "correct": 0,
+    "wrong": 0,
+    "srs_streak": 0,
+    "last_reviewed": null,
+    "next_review": null
+  }
 ]

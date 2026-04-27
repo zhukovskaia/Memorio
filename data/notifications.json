@@ -1,36 +1,398 @@
 {
- "Aesvna": [
-  {
-   "id": 1,
-   "word_id": null,
-   "message": "Открыт 2 уровень! Приходите учить новые слова!",
-   "remind_at": "2026-03-29T23:55:57.260836",
-   "read": false,
-   "created_at": "2026-03-28T23:55:57.260908"
-  },
-  {
-   "id": 2,
-   "word_id": 7,
-   "message": "Слово \"Как дела?\" требует повторения!",
-   "remind_at": "2026-03-29T23:56:24.271903",
-   "read": false,
-   "created_at": "2026-03-28T23:56:24.271957"
-  },
-  {
-   "id": 3,
-   "word_id": null,
-   "message": "Открыт 2 уровень! У вас 5 новых попыток!",
-   "remind_at": "2026-03-30T00:06:31.665773",
-   "read": false,
-   "created_at": "2026-03-29T00:06:31.665805"
-  },
-  {
-   "id": 4,
-   "word_id": null,
-   "message": "Открыт 2 уровень! У вас 5 новых попыток!",
-   "remind_at": "2026-03-30T00:09:22.186869",
-   "read": false,
-   "created_at": "2026-03-29T00:09:22.186899"
-  }
- ]
+  "Aesvna": [
+    {
+      "id": 1,
+      "word_id": null,
+      "message": "Открыт 2 уровень! Приходите учить новые слова!",
+      "remind_at": "2026-03-29T23:55:57.260836",
+      "read": false,
+      "created_at": "2026-03-28T23:55:57.260908"
+    },
+    {
+      "id": 2,
+      "word_id": 7,
+      "message": "Слово \"Как дела?\" требует повторения!",
+      "remind_at": "2026-03-29T23:56:24.271903",
+      "read": false,
+      "created_at": "2026-03-28T23:56:24.271957"
+    },
+    {
+      "id": 3,
+      "word_id": null,
+      "message": "Открыт 2 уровень! У вас 5 новых попыток!",
+      "remind_at": "2026-03-30T00:06:31.665773",
+      "read": false,
+      "created_at": "2026-03-29T00:06:31.665805"
+    },
+    {
+      "id": 4,
+      "word_id": null,
+      "message": "Открыт 2 уровень! У вас 5 новых попыток!",
+      "remind_at": "2026-03-30T00:09:22.186869",
+      "read": false,
+      "created_at": "2026-03-29T00:09:22.186899"
+    }
+  ],
+  "show": [
+    {
+      "id": 7,
+      "word_id": 7,
+      "message": "Повторение слова \"divmod(10, 3)\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:15:25.579155",
+      "read": false,
+      "created_at": "2026-04-27T19:15:25.579163",
+      "type": "srs_review"
+    },
+    {
+      "id": 11,
+      "word_id": 11,
+      "message": "Повторение слова \"Оператор 'или'\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:16:22.387076",
+      "read": false,
+      "created_at": "2026-04-27T19:16:22.387098",
+      "type": "srs_review"
+    },
+    {
+      "id": 15,
+      "word_id": 15,
+      "message": "Повторение слова \"Оператор 'и'\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:16:22.393419",
+      "read": false,
+      "created_at": "2026-04-27T19:16:22.393429",
+      "type": "srs_review"
+    },
+    {
+      "id": 16,
+      "word_id": 16,
+      "message": "Повторение слова \"type(5)\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:16:22.394610",
+      "read": false,
+      "created_at": "2026-04-27T19:16:22.394620",
+      "type": "srs_review"
+    },
+    {
+      "id": 18,
+      "word_id": 18,
+      "message": "Повторение слова \"Логический тип\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:16:22.396977",
+      "read": false,
+      "created_at": "2026-04-27T19:16:22.396987",
+      "type": "srs_review"
+    },
+    {
+      "id": 22,
+      "word_id": 22,
+      "message": "Повторение слова \"Сравнение на равенство\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:16:22.403755",
+      "read": false,
+      "created_at": "2026-04-27T19:16:22.403765",
+      "type": "srs_review"
+    },
+    {
+      "id": 23,
+      "word_id": 8,
+      "message": "Повторение слова \"Создание переменной\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:16:22.407590",
+      "read": false,
+      "created_at": "2026-04-27T19:16:22.407601",
+      "type": "srs_review"
+    },
+    {
+      "id": 26,
+      "word_id": 26,
+      "message": "Повторение слова \"2 ** 3\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:16:22.412900",
+      "read": false,
+      "created_at": "2026-04-27T19:16:22.412911",
+      "type": "srs_review"
+    },
+    {
+      "id": 32,
+      "word_id": 32,
+      "message": "Повторение слова \"Сравнение на неравенство\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:16:22.421684",
+      "read": false,
+      "created_at": "2026-04-27T19:16:22.421695",
+      "type": "srs_review"
+    },
+    {
+      "id": 33,
+      "word_id": 6,
+      "message": "Повторение слова \"Функция ввода\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:16:22.426057",
+      "read": false,
+      "created_at": "2026-04-27T19:16:22.426068",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 2,
+      "message": "Повторение слова \"Функция длины\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:46:42.962035",
+      "read": false,
+      "created_at": "2026-04-27T19:46:42.962061",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 13,
+      "message": "Повторение слова \"10 % 3\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:46:59.014401",
+      "read": false,
+      "created_at": "2026-04-27T19:46:59.014448",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 19,
+      "message": "Повторение слова \"bool('')\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:47:16.608505",
+      "read": false,
+      "created_at": "2026-04-27T19:47:16.608588",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 1,
+      "message": "Повторение слова \"10 // 3\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:06.940726",
+      "read": false,
+      "created_at": "2026-04-27T19:50:06.940852",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 5,
+      "message": "Повторение слова \"Кортеж пустой\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:11.118126",
+      "read": false,
+      "created_at": "2026-04-27T19:50:11.118235",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 4,
+      "message": "Повторение слова \"Список пустой\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:16.047868",
+      "read": false,
+      "created_at": "2026-04-27T19:50:16.047894",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 20,
+      "message": "Повторение слова \"print(1, 2)\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:17.490065",
+      "read": false,
+      "created_at": "2026-04-27T19:50:17.490131",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 14,
+      "message": "Повторение слова \"Комментарий в коде\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:19.546838",
+      "read": false,
+      "created_at": "2026-04-27T19:50:19.546897",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 3,
+      "message": "Повторение слова \"None обозначает\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:20.989656",
+      "read": false,
+      "created_at": "2026-04-27T19:50:20.989705",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 10,
+      "message": "Повторение слова \"Условный оператор\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:23.462255",
+      "read": false,
+      "created_at": "2026-04-27T19:50:23.462294",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 25,
+      "message": "Повторение слова \"int('10') + 5\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:41.024697",
+      "read": false,
+      "created_at": "2026-04-27T19:50:41.024719",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 23,
+      "message": "Повторение слова \"x = 5; x += 2\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:42.470218",
+      "read": false,
+      "created_at": "2026-04-27T19:50:42.470236",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 12,
+      "message": "Повторение слова \"Булевы значения\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:46.604071",
+      "read": false,
+      "created_at": "2026-04-27T19:50:46.604094",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 27,
+      "message": "Повторение слова \"print('Hello')\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:50:49.259084",
+      "read": false,
+      "created_at": "2026-04-27T19:50:49.259387",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 34,
+      "message": "Повторение слова \"Оператор присваивания\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:51:01.624959",
+      "read": false,
+      "created_at": "2026-04-27T19:51:01.625001",
+      "type": "srs_review"
+    },
+    {
+      "id": 34,
+      "word_id": 33,
+      "message": "Повторение слова \"str(100)\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:51:03.447561",
+      "read": false,
+      "created_at": "2026-04-27T19:51:03.447605",
+      "type": "srs_review"
+    },
+    {
+      "id": 35,
+      "word_id": 9,
+      "message": "Повторение слова \"for i in range(3): print(i)\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:58:44.434826",
+      "read": false,
+      "created_at": "2026-04-27T19:58:44.434841",
+      "type": "srs_review"
+    },
+    {
+      "id": 36,
+      "word_id": 36,
+      "message": "Повторение слова \"Абсолютное число\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:58:44.443923",
+      "read": false,
+      "created_at": "2026-04-27T19:58:44.443938",
+      "type": "srs_review"
+    },
+    {
+      "id": 36,
+      "word_id": 31,
+      "message": "Повторение слова \"len('Python')\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:58:54.259820",
+      "read": false,
+      "created_at": "2026-04-27T19:58:54.259854",
+      "type": "srs_review"
+    },
+    {
+      "id": 36,
+      "word_id": 35,
+      "message": "Повторение слова \"x = [1, 2]; x.pop()\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:58:58.581993",
+      "read": false,
+      "created_at": "2026-04-27T19:58:58.582021",
+      "type": "srs_review"
+    },
+    {
+      "id": 36,
+      "word_id": 21,
+      "message": "Повторение слова \"Список обозначается через\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:59:00.191950",
+      "read": false,
+      "created_at": "2026-04-27T19:59:00.191984",
+      "type": "srs_review"
+    },
+    {
+      "id": 36,
+      "word_id": 24,
+      "message": "Повторение слова \"int(True)\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:59:01.571606",
+      "read": false,
+      "created_at": "2026-04-27T19:59:01.571653",
+      "type": "srs_review"
+    },
+    {
+      "id": 36,
+      "word_id": 29,
+      "message": "Повторение слова \"True and False\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:59:04.351992",
+      "read": false,
+      "created_at": "2026-04-27T19:59:04.352022",
+      "type": "srs_review"
+    },
+    {
+      "id": 36,
+      "word_id": 28,
+      "message": "Повторение слова \"float(5)\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:59:12.007355",
+      "read": false,
+      "created_at": "2026-04-27T19:59:12.007375",
+      "type": "srs_review"
+    },
+    {
+      "id": 36,
+      "word_id": 30,
+      "message": "Повторение слова \"int(False)\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:59:13.434759",
+      "read": false,
+      "created_at": "2026-04-27T19:59:13.434782",
+      "type": "srs_review"
+    },
+    {
+      "id": 36,
+      "word_id": 17,
+      "message": "Повторение слова \"'A' + 'B'\"",
+      "streak": 1,
+      "remind_at": "2026-04-28T19:59:14.836915",
+      "read": false,
+      "created_at": "2026-04-27T19:59:14.836964",
+      "type": "srs_review"
+    }
+  ]
 }

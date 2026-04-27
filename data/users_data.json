@@ -323,5 +323,439 @@
         "next_level_xp": 150
       }
     }
+  },
+  "show": {
+    "username": "show",
+    "password": "e81bbab091d37a81e82a3ae84472ea5f0bc023029c7e1e2e4b40a02c1b7de724",
+    "created_at": "2026-04-27T17:04:54.495525",
+    "words": [
+      {
+        "id": 1,
+        "word": "10 // 3",
+        "translation": "3",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 2,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.400235",
+        "next_review": null
+      },
+      {
+        "id": 2,
+        "word": "Функция длины",
+        "translation": "len()",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:15:25.572110",
+        "next_review": null
+      },
+      {
+        "id": 3,
+        "word": "None обозначает",
+        "translation": "Пустоту",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 2,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.405847",
+        "next_review": null
+      },
+      {
+        "id": 4,
+        "word": "Список пустой",
+        "translation": "[]",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 2,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.411103",
+        "next_review": null
+      },
+      {
+        "id": 5,
+        "word": "Кортеж пустой",
+        "translation": "()",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.422621",
+        "next_review": null
+      },
+      {
+        "id": 6,
+        "word": "Функция ввода",
+        "translation": "input()",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 1,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:16:22.425552",
+        "next_review": null
+      },
+      {
+        "id": 7,
+        "word": "divmod(10, 3)",
+        "translation": "(3, 1)",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:15:25.578748",
+        "next_review": null
+      },
+      {
+        "id": 8,
+        "word": "Создание переменной",
+        "translation": "x = 10",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 1,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:16:22.407133",
+        "next_review": null
+      },
+      {
+        "id": 9,
+        "word": "for i in range(3): print(i)",
+        "translation": "0 1 2",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 1,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:58:44.434180",
+        "next_review": null
+      },
+      {
+        "id": 10,
+        "word": "Условный оператор",
+        "translation": "if",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:15:25.582062",
+        "next_review": null
+      },
+      {
+        "id": 11,
+        "word": "Оператор 'или'",
+        "translation": "or",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:16:22.386347",
+        "next_review": null
+      },
+      {
+        "id": 12,
+        "word": "Булевы значения",
+        "translation": "True, False",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.388269",
+        "next_review": null
+      },
+      {
+        "id": 13,
+        "word": "10 % 3",
+        "translation": "1",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.390677",
+        "next_review": null
+      },
+      {
+        "id": 14,
+        "word": "Комментарий в коде",
+        "translation": "#",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.391819",
+        "next_review": null
+      },
+      {
+        "id": 15,
+        "word": "Оператор 'и'",
+        "translation": "and",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:16:22.392969",
+        "next_review": null
+      },
+      {
+        "id": 16,
+        "word": "type(5)",
+        "translation": "<class 'int'>",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:16:22.394169",
+        "next_review": null
+      },
+      {
+        "id": 17,
+        "word": "'A' + 'B'",
+        "translation": "AB",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:58:44.427466",
+        "next_review": null
+      },
+      {
+        "id": 18,
+        "word": "Логический тип",
+        "translation": "bool",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:16:22.396543",
+        "next_review": null
+      },
+      {
+        "id": 19,
+        "word": "bool('')",
+        "translation": "False",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.397761",
+        "next_review": null
+      },
+      {
+        "id": 20,
+        "word": "print(1, 2)",
+        "translation": "1 2",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.398997",
+        "next_review": null
+      },
+      {
+        "id": 21,
+        "word": "Список обозначается через",
+        "translation": "[]",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 2,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:58:44.417229",
+        "next_review": null
+      },
+      {
+        "id": 22,
+        "word": "Сравнение на равенство",
+        "translation": "==",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:16:22.403301",
+        "next_review": null
+      },
+      {
+        "id": 23,
+        "word": "x = 5; x += 2",
+        "translation": "7",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.404581",
+        "next_review": null
+      },
+      {
+        "id": 24,
+        "word": "int(True)",
+        "translation": "1",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 2,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:58:44.424296",
+        "next_review": null
+      },
+      {
+        "id": 25,
+        "word": "int('10') + 5",
+        "translation": "15",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.409799",
+        "next_review": null
+      },
+      {
+        "id": 26,
+        "word": "2 ** 3",
+        "translation": "8",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:16:22.412434",
+        "next_review": null
+      },
+      {
+        "id": 27,
+        "word": "print('Hello')",
+        "translation": "Hello",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.413767",
+        "next_review": null
+      },
+      {
+        "id": 28,
+        "word": "float(5)",
+        "translation": "5.0",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 2,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:58:44.420505",
+        "next_review": null
+      },
+      {
+        "id": 29,
+        "word": "True and False",
+        "translation": "False",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:58:44.432122",
+        "next_review": null
+      },
+      {
+        "id": 30,
+        "word": "int(False)",
+        "translation": "0",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 2,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:58:44.440659",
+        "next_review": null
+      },
+      {
+        "id": 31,
+        "word": "len('Python')",
+        "translation": "6",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 2,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:58:44.436126",
+        "next_review": null
+      },
+      {
+        "id": 32,
+        "word": "Сравнение на неравенство",
+        "translation": "!=",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:16:22.421201",
+        "next_review": null
+      },
+      {
+        "id": 33,
+        "word": "str(100)",
+        "translation": "'100'",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.424100",
+        "next_review": null
+      },
+      {
+        "id": 34,
+        "word": "Оператор присваивания",
+        "translation": "=",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:16:22.426982",
+        "next_review": null
+      },
+      {
+        "id": 35,
+        "word": "x = [1, 2]; x.pop()",
+        "translation": "2",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T19:58:44.429852",
+        "next_review": null
+      },
+      {
+        "id": 36,
+        "word": "Абсолютное число",
+        "translation": "abs()",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T19:58:44.443206",
+        "next_review": null
+      }
+    ],
+    "user_level": {
+      "current": 1,
+      "xp": 0,
+      "next_level_xp": 100
+    },
+    "account_points": 239,
+    "account_level": 2,
+    "global_stats": {
+      "quiz_played": 8,
+      "sprint_played": 5,
+      "total_correct": 79,
+      "total_wrong": 197
+    },
+    "sprint_record": 13,
+    "games_progress": {
+      "cards": {
+        "level": 1,
+        "xp": 0,
+        "next_level_xp": 150
+      },
+      "quiz": {
+        "level": 2,
+        "xp": 135,
+        "next_level_xp": 100
+      },
+      "sprint": {
+        "level": 1,
+        "xp": 0,
+        "next_level_xp": 150
+      }
+    }
   }
 }

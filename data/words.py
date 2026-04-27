@@ -1,7 +1,7 @@
 import json
 import os
 import random
-
+from datetime import datetime
 DATA_FILE = os.path.join(os.path.dirname(__file__), 'words_data.json')
 
 # ==========================================
@@ -273,9 +273,40 @@ def get_all_card_questions():
     """Получить ВСЕ вопросы для режима Карточки (все уровни)"""
     return CARD_QUESTIONS
 
+
 def update_card_stats(word_id, is_correct):
-    # В данном режиме статистика не пишется в файл, чтобы не усложнять
-    return True
+    """Обновить статистику слова в words_data.json"""
+    try:
+        with open(DATA_FILE, 'r', encoding='utf-8') as f:
+            words = json.load(f)
+
+        for word in words:
+            if word['id'] == word_id:
+                if is_correct:
+                    word['correct'] = word.get('correct', 0) + 1
+                    word['srs_streak'] = word.get('srs_streak', 0) + 1
+                else:
+                    word['wrong'] = word.get('wrong', 0) + 1
+                    word['srs_streak'] = max(0, word.get('srs_streak', 0) - 1)
+
+                word['last_reviewed'] = datetime.now().isoformat()
+
+                # Рассчитываем следующую дату повторения
+                from services.notifications import get_next_review_date
+                next_review = get_next_review_date(
+                    word.get('srs_streak', 0),
+                    is_correct
+                )
+                word['next_review'] = next_review.isoformat()
+                break
+
+        with open(DATA_FILE, 'w', encoding='utf-8') as f:
+            json.dump(words, f, ensure_ascii=False, indent=2)
+
+        return True
+    except Exception as e:
+        print(f"Error updating card stats: {e}")
+        return False
 
 def get_random_words(count=10, difficulty=None):
     return random.sample(CARD_QUESTIONS, min(count, len(CARD_QUESTIONS)))
