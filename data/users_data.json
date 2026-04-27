@@ -263,7 +263,7 @@
       "quiz": {
         "name": "Викторина",
         "level": 3,
-        "xp": 204,
+        "xp": 214,
         "next_level_xp": 150,
         "questions_per_game": 10,
         "xp_per_correct": 5
@@ -277,14 +277,51 @@
         "xp_per_correct": 5
       }
     },
-    "account_points": 421,
+    "account_points": 431,
     "sprint_record": 21,
     "account_level": 3,
     "global_stats": {
-      "quiz_played": 1,
+      "quiz_played": 2,
       "sprint_played": 0,
-      "total_correct": 9,
-      "total_wrong": 1
+      "total_correct": 11,
+      "total_wrong": 9
+    }
+  },
+  "nikita": {
+    "username": "nikita",
+    "password": "a8da56c0999016850861a74b1285ee34f65cb957d959d3cb824b83eacab94abf",
+    "created_at": "2026-04-22T22:51:49.489006",
+    "words": [],
+    "user_level": {
+      "current": 1,
+      "xp": 0,
+      "next_level_xp": 100
+    },
+    "account_points": 116,
+    "account_level": 1,
+    "global_stats": {
+      "quiz_played": 2,
+      "sprint_played": 1,
+      "total_correct": 30,
+      "total_wrong": 5
+    },
+    "sprint_record": 12,
+    "games_progress": {
+      "cards": {
+        "level": 1,
+        "xp": 0,
+        "next_level_xp": 150
+      },
+      "quiz": {
+        "level": 1,
+        "xp": 90,
+        "next_level_xp": 100
+      },
+      "sprint": {
+        "level": 1,
+        "xp": 0,
+        "next_level_xp": 150
+      }
     }
   }
 }
