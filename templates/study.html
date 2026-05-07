@@ -3,567 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тренировка - Запоминалка</title>
-
-    <link rel="manifest" href="/static/manifest.json">
-    <meta name="theme-color" content="#764ba2">
-
+    <title>Тренировка — PythonMemorio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: Arial, sans-serif;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #43e97b, #38f9d7, #4facfe, #667eea);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
         }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding: 15px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-
-        .back-btn {
-            color: white;
-            text-decoration: none;
-            font-size: 24px;
-            transition: transform 0.2s;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
-
-        .back-btn:hover {
-            transform: translateX(-3px);
-        }
-
-        .stats {
-            font-size: 14px;
-            background: rgba(255,255,255,0.2);
-            padding: 5px 12px;
-            border-radius: 20px;
-        }
-
-        .attempts-info {
-            font-size: 12px;
-            background: rgba(255,255,255,0.15);
-            padding: 4px 10px;
-            border-radius: 20px;
-        }
-
-        .scene {
-            width: 100%;
-            height: 350px;
-            perspective: 1000px;
-            margin: 20px 0;
-            cursor: pointer;
-        }
-
-        .card-3d {
-            width: 100%;
-            height: 100%;
-            position: relative;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
-
-        .card-3d.flipped {
-            transform: rotateY(180deg);
-        }
-
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-        }
-
-        .card-front {
-            background: white;
-            color: #764ba2;
-            transform: rotateY(0deg);
-        }
-
-        .card-back {
-            background: white;
-            color: #764ba2;
-            transform: rotateY(180deg);
-        }
-
-        .question-word {
-            font-size: 2.5em;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .result-icon {
-            font-size: 3em;
-            margin-bottom: 20px;
-        }
-
-        .result-message {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-        }
-
-        .correct-answer {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #4ade80;
-            margin-top: 15px;
-        }
-
-        .wrong-answer {
-            font-size: 1.2em;
-            color: #f87171;
-            margin-top: 10px;
-        }
-
-        .hint {
-            margin-top: 20px;
-            font-size: 0.9em;
-            color: #999;
-        }
-
-        .options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
         .option-btn {
-            padding: 15px;
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(67, 233, 123, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .option-btn:hover {
+            border-color: #43e97b;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(67, 233, 123, 0.2);
+        }
+        .option-btn.correct {
+            border-color: #43e97b;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
             color: white;
-            font-size: 1em;
-            cursor: pointer;
-            transition: all 0.2s;
-            text-align: center;
         }
-
-        .option-btn:hover:not(:disabled) {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.02);
-        }
-
-        .option-btn:disabled {
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        .next-btn {
-            width: 100%;
-            padding: 15px;
-            background: #667eea;
+        .option-btn.wrong {
+            border-color: #f5576c;
+            background: linear-gradient(135deg, #f5576c 0%, #ff6b6b 100%);
             color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 20px;
         }
-
-        .next-btn:hover:not(:disabled) {
-            background: #5a67d8;
-            transform: scale(1.02);
-        }
-
-        .next-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .progress {
-            margin: 20px 0;
-            text-align: center;
-        }
-
         .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 999px;
             overflow: hidden;
-            margin-top: 10px;
         }
-
         .progress-fill {
-            height: 100%;
-            background: #4ade80;
-            transition: width 0.3s ease;
-            width: 0%;
-        }
-
-        .results {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            color: #333;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .results h2 {
-            color: #764ba2;
-            margin-bottom: 20px;
-        }
-
-        .results .score {
-            font-size: 3em;
-            font-weight: bold;
-            color: #4ade80;
-            margin: 20px 0;
-        }
-
-        .results-stats {
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 10px;
-            margin: 15px 0;
-        }
-
-        .xp-gained {
-            color: #ffd700;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .disabled-click {
-            pointer-events: none;
-        }
-
-        .level-up-message {
-            background: linear-gradient(135deg, #ffd700, #ffb347);
-            color: #333;
-            padding: 10px;
-            border-radius: 10px;
-            margin-top: 15px;
-            font-weight: bold;
+            background: linear-gradient(90deg, #43e97b, #38f9d7, #4facfe);
+            background-size: 200% 100%;
+            animation: gradient 3s ease infinite;
+            transition: width 0.5s ease;
         }
     </style>
 </head>
-<body>
-    <div class="header">
-        <a href="/" class="back-btn">← Назад</a>
-        <div class="stats" id="stats">Вопрос 0/0</div>
-        <div class="attempts-info" id="attemptsInfo"></div>
-    </div>
+<body class="px-4 py-6 md:px-8">
 
-    <div id="trainingArea">
-        <div class="progress">
-            <div>Прогресс тренировки</div>
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
+    <div class="max-w-3xl mx-auto">
+
+        <!-- Header -->
+        <div class="glass-card rounded-2xl p-4 md:p-5 mb-6 shadow-xl flex items-center justify-between" data-aos="fade-down">
+            <a href="/" class="flex items-center gap-2 text-gray-600 hover:text-green-600 transition-colors font-bold">
+                <i class="fas fa-arrow-left text-lg"></i>
+                <span class="hidden sm:inline">На главную</span>
+            </a>
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-600 rounded-xl flex items-center justify-center text-white text-sm shadow-md">
+                    <i class="fas fa-clone"></i>
+                </div>
+                <div>
+                    <div class="font-black text-lg" style="background:linear-gradient(135deg,#43e97b,#38f9d7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Карточки</div>
+                    <div class="text-xs text-gray-500 font-semibold">Режим изучения</div>
+                </div>
+            </div>
+            <div class="text-sm font-bold text-gray-500" id="counter">0/10</div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-bar h-3 mb-6 shadow-inner" data-aos="fade-up" data-aos-delay="100">
+            <div class="progress-fill h-full rounded-full" id="progress-bar" style="width: 0%"></div>
+        </div>
+
+        <!-- Игровая область -->
+        <div id="training-area" data-aos="zoom-in" data-aos-duration="600">
+            <div class="glass-card rounded-3xl p-8 md:p-10 shadow-2xl">
+                <div class="text-center mb-8">
+                    <div class="inline-block bg-gradient-to-br from-green-100 to-emerald-100 px-4 py-2 rounded-full text-sm font-bold text-green-700 mb-4">
+                        <i class="fas fa-clone mr-1"></i>Вопрос <span id="q-number">1</span> из <span id="q-total">10</span>
+                    </div>
+                    <h2 class="text-xl md:text-2xl font-black text-gray-800" id="question-text">Загрузка...</h2>
+                </div>
+                <div class="grid grid-cols-1 gap-3" id="options-container">
+                    <!-- Варианты -->
+                </div>
             </div>
         </div>
 
-        <div class="scene">
-            <div class="card-3d" id="card3d">
-                <div class="card-front">
-                    <div class="question-word" id="questionWord">Загрузка...</div>
-                    <div class="hint">👆 Нажми на карточку после ответа</div>
+        <!-- Результаты -->
+        <div id="training-results" class="hidden">
+            <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl text-center" data-aos="zoom-in">
+                <div class="text-6xl mb-4">🎉</div>
+                <h2 class="text-3xl font-black text-gray-800 mb-2">Тренировка завершена!</h2>
+                <p class="text-gray-500 font-medium mb-8">Отличная работа!</p>
+
+                <div class="mb-8">
+                    <div class="inline-block text-7xl font-black" id="result-percentage" style="background:linear-gradient(135deg,#43e97b,#38f9d7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">0%</div>
                 </div>
-                <div class="card-back" id="cardBack">
-                    <div class="result-icon" id="resultIcon"></div>
-                    <div class="result-message" id="resultMessage"></div>
-                    <div class="correct-answer" id="correctAnswer"></div>
-                    <div class="wrong-answer" id="wrongAnswer"></div>
-                    <div class="xp-gained" id="xpGained"></div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-green-50 rounded-2xl p-4 border border-green-200">
+                        <div class="text-3xl font-black text-green-600" id="result-correct">0</div>
+                        <div class="text-xs text-green-700 font-semibold uppercase">Верно ✅</div>
+                    </div>
+                    <div class="bg-red-50 rounded-2xl p-4 border border-red-200">
+                        <div class="text-3xl font-black text-red-500" id="result-wrong">0</div>
+                        <div class="text-xs text-red-600 font-semibold uppercase">Ошибок ❌</div>
+                    </div>
+                    <div class="bg-blue-50 rounded-2xl p-4 border border-blue-200">
+                        <div class="text-3xl font-black text-blue-600" id="result-total">0</div>
+                        <div class="text-xs text-blue-700 font-semibold uppercase">Всего 📊</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="restartTraining()" class="px-8 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                        <i class="fas fa-redo mr-2"></i>Новая тренировка
+                    </button>
+                    <a href="/" class="px-8 py-3 rounded-xl font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all">
+                        <i class="fas fa-home mr-2"></i>На главную
+                    </a>
                 </div>
             </div>
         </div>
 
-        <div class="options" id="options">
-            <button class="option-btn" data-answer="">Загрузка...</button>
-            <button class="option-btn" data-answer="">Загрузка...</button>
-            <button class="option-btn" data-answer="">Загрузка...</button>
-            <button class="option-btn" data-answer="">Загрузка...</button>
-        </div>
-
-        <button id="nextBtn" class="next-btn" disabled>➡️ Далее</button>
     </div>
 
-    <div id="resultsArea" class="results hidden">
-        <h2>🎉 Тренировка завершена!</h2>
-        <div class="score" id="score">0%</div>
-        <div class="results-stats">
-            <p>✅ Правильных ответов: <strong id="correctCount">0</strong></p>
-            <p>❌ Неправильных ответов: <strong id="wrongCount">0</strong></p>
-            <p>📊 Всего вопросов: <strong id="totalCount">0</strong></p>
-        </div>
-        <div id="levelUpMessage" class="level-up-message hidden"></div>
-        <button class="next-btn" onclick="location.reload()">🔄 Новая тренировка</button>
-        <a href="/" class="next-btn" style="display: inline-block; margin-top: 10px; text-decoration: none; text-align: center;">🏠 На главную</a>
-    </div>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ once: true });</script>
 
     <script>
-        let currentQuestion = null;
-        let currentWordId = null;
-        let hasAnswered = false;
-        let sessionId = null;
-        let correctAnswers = 0;
-        let wrongAnswers = 0;
-        let questionsAnswered = 0;
-        let totalQuestions = 0;
+    let sessionId = null;
+    let currentQuestion = null;
+    let totalQuestions = 0;
+    let currentNum = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
 
-        async function startTraining() {
-            try {
-                const response = await fetch('/api/training/start', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ count: 5 })
-                });
-
-                const data = await response.json();
-
-                if (data.error) {
-                    alert(data.error);
-                    window.location.href = '/';
-                    return;
-                }
-
-                sessionId = data.session_id;
-                totalQuestions = data.total_questions;
-
-                if (data.attempts_left !== undefined) {
-                    document.getElementById('attemptsInfo').textContent = `⚡ Осталось попыток: ${data.attempts_left}`;
-                }
-
-                await loadQuestion();
-            } catch (error) {
-                console.error('Ошибка начала тренировки:', error);
-                document.getElementById('questionWord').textContent = 'Ошибка загрузки';
-            }
+    async function startTraining() {
+        const resp = await fetch('/api/training/start', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ count: 10 })
+        });
+        const data = await resp.json();
+        if (data.error) {
+            alert(data.error);
+            window.location.href = '/';
+            return;
         }
+        sessionId = data.session_id;
+        totalQuestions = data.total_questions;
+        document.getElementById('q-total').textContent = totalQuestions;
+        loadQuestion();
+    }
 
-        async function loadQuestion() {
-            try {
-                const response = await fetch(`/api/training/question/${sessionId}`);
-                const data = await response.json();
-
-                if (data.finished) {
-                    finishTraining();
-                    return;
-                }
-
-                currentQuestion = data;
-                currentWordId = data.word_id;
-
-                document.getElementById('questionWord').textContent = data.question;
-                document.getElementById('stats').textContent = `Вопрос ${data.question_number}/${data.total_questions}`;
-
-                const progress = ((data.question_number - 1) / data.total_questions) * 100;
-                document.getElementById('progressFill').style.width = `${progress}%`;
-
-                const optionButtons = document.querySelectorAll('.option-btn');
-                data.options.forEach((option, index) => {
-                    if (optionButtons[index]) {
-                        optionButtons[index].textContent = option;
-                        optionButtons[index].dataset.answer = option;
-                        optionButtons[index].disabled = false;
-                        optionButtons[index].style.background = 'rgba(255,255,255,0.2)';
-                    }
-                });
-
-                hasAnswered = false;
-                document.getElementById('nextBtn').disabled = true;
-
-                const card3d = document.getElementById('card3d');
-                card3d.classList.remove('flipped');
-                card3d.classList.remove('disabled-click');
-
-                document.getElementById('xpGained').textContent = '';
-
-            } catch (error) {
-                console.error('Ошибка загрузки вопроса:', error);
-            }
+    async function loadQuestion() {
+        const resp = await fetch(`/api/training/question/${sessionId}`);
+        const data = await resp.json();
+        if (data.finished) {
+            showResults();
+            return;
         }
+        currentQuestion = data;
+        currentNum = data.question_number;
 
-        async function handleAnswer(selectedAnswer) {
-            if (hasAnswered) return;
+        document.getElementById('q-number').textContent = currentNum;
+        document.getElementById('counter').textContent = `${currentNum}/${totalQuestions}`;
+        document.getElementById('progress-bar').style.width = `${(currentNum / totalQuestions) * 100}%`;
+        document.getElementById('question-text').textContent = data.question;
 
-            hasAnswered = true;
-
-            document.querySelectorAll('.option-btn').forEach(btn => {
-                btn.disabled = true;
-            });
-
-            try {
-                const response = await fetch('/api/training/answer', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        session_id: sessionId,
-                        word_id: currentWordId,
-                        answer: selectedAnswer
-                    })
-                });
-
-                const result = await response.json();
-
-                const resultIcon = document.getElementById('resultIcon');
-                const resultMessage = document.getElementById('resultMessage');
-                const correctAnswerDiv = document.getElementById('correctAnswer');
-                const wrongAnswerDiv = document.getElementById('wrongAnswer');
-                const xpGainedDiv = document.getElementById('xpGained');
-
-                if (result.is_correct) {
-                    resultIcon.textContent = '✅';
-                    resultMessage.textContent = 'Правильно! 🎉';
-                    correctAnswerDiv.textContent = `Правильный ответ: ${result.correct_answer}`;
-                    wrongAnswerDiv.textContent = '';
-                    correctAnswers++;
-
-                    if (result.xp_gained) {
-                        xpGainedDiv.textContent = `✨ +${result.xp_gained} опыта!`;
-                    }
-                } else {
-                    resultIcon.textContent = '❌';
-                    resultMessage.textContent = 'Неправильно!';
-                    correctAnswerDiv.textContent = `Правильный ответ: ${result.correct_answer}`;
-                    wrongAnswerDiv.textContent = `Ваш ответ: ${selectedAnswer}`;
-                    wrongAnswers++;
-                    xpGainedDiv.textContent = '';
-                }
-
-                questionsAnswered++;
-
-                const progress = (questionsAnswered / totalQuestions) * 100;
-                document.getElementById('progressFill').style.width = `${progress}%`;
-                document.getElementById('stats').textContent = `Вопрос ${questionsAnswered}/${totalQuestions}`;
-
-                const card3d = document.getElementById('card3d');
-                card3d.classList.add('flipped');
-
-                if (result.finished) {
-                    setTimeout(() => {
-                        finishTrainingWithResults(result.results);
-                    }, 1500);
-                } else {
-                    document.getElementById('nextBtn').disabled = false;
-                }
-
-            } catch (error) {
-                console.error('Ошибка проверки ответа:', error);
-                hasAnswered = false;
-                document.querySelectorAll('.option-btn').forEach(btn => {
-                    btn.disabled = false;
-                });
-            }
-        }
-
-        async function nextQuestion() {
-            if (!hasAnswered) return;
-            await loadQuestion();
-        }
-
-        function finishTrainingWithResults(results) {
-            if (results) {
-                document.getElementById('score').textContent = `${results.percentage}%`;
-                document.getElementById('correctCount').textContent = results.correct;
-                document.getElementById('wrongCount').textContent = results.wrong;
-                document.getElementById('totalCount').textContent = results.total;
-            } else {
-                // Если результатов нет, используем локальные счетчики
-                const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
-                document.getElementById('score').textContent = `${percentage}%`;
-                document.getElementById('correctCount').textContent = correctAnswers;
-                document.getElementById('wrongCount').textContent = wrongAnswers;
-                document.getElementById('totalCount').textContent = totalQuestions;
-            }
-
-            document.getElementById('trainingArea').classList.add('hidden');
-            document.getElementById('resultsArea').classList.remove('hidden');
-        }
-
-        async function finishTraining() {
-            try {
-                const response = await fetch(`/api/training/session/${sessionId}/results`);
-                const results = await response.json();
-
-                if (results && !results.error) {
-                    document.getElementById('score').textContent = `${results.percentage}%`;
-                    document.getElementById('correctCount').textContent = results.correct;
-                    document.getElementById('wrongCount').textContent = results.wrong;
-                    document.getElementById('totalCount').textContent = results.total;
-                } else {
-                    // Если не удалось получить результаты, используем локальные
-                    const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
-                    document.getElementById('score').textContent = `${percentage}%`;
-                    document.getElementById('correctCount').textContent = correctAnswers;
-                    document.getElementById('wrongCount').textContent = wrongAnswers;
-                    document.getElementById('totalCount').textContent = totalQuestions;
-                }
-            } catch (error) {
-                console.error('Ошибка получения результатов:', error);
-                // Используем локальные данные
-                const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
-                document.getElementById('score').textContent = `${percentage}%`;
-                document.getElementById('correctCount').textContent = correctAnswers;
-                document.getElementById('wrongCount').textContent = wrongAnswers;
-                document.getElementById('totalCount').textContent = totalQuestions;
-            }
-
-            document.getElementById('trainingArea').classList.add('hidden');
-            document.getElementById('resultsArea').classList.remove('hidden');
-        }
-
-        // Обработчики событий
-        document.querySelectorAll('.option-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                if (!hasAnswered) {
-                    handleAnswer(btn.dataset.answer);
-                }
-            });
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        data.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn w-full text-left px-6 py-4 rounded-xl font-semibold text-gray-700 text-lg';
+            btn.textContent = opt;
+            btn.onclick = () => submitAnswer(opt, btn);
+            container.appendChild(btn);
         });
 
-        document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+        AOS.refresh();
+    }
 
-        // Запуск тренировки
+    async function submitAnswer(selected, btnElement) {
+        document.querySelectorAll('.option-btn').forEach(b => b.onclick = null);
+
+        const isCorrect = selected === currentQuestion.correct_answer;
+
+        if (isCorrect) {
+            btnElement.classList.add('correct');
+            correctCount++;
+        } else {
+            btnElement.classList.add('wrong');
+            wrongCount++;
+            document.querySelectorAll('.option-btn').forEach(b => {
+                if (b.textContent === currentQuestion.correct_answer) b.classList.add('correct');
+            });
+        }
+
+        await fetch('/api/training/answer', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                session_id: sessionId,
+                word_id: currentQuestion.word_id,
+                answer: selected
+            })
+        });
+
+        setTimeout(() => loadQuestion(), isCorrect ? 800 : 1500);
+    }
+
+    function showResults() {
+        document.getElementById('training-area').classList.add('hidden');
+        document.getElementById('training-results').classList.remove('hidden');
+
+        const total = correctCount + wrongCount;
+        const pct = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
+        document.getElementById('result-percentage').textContent = `${pct}%`;
+        document.getElementById('result-correct').textContent = correctCount;
+        document.getElementById('result-wrong').textContent = wrongCount;
+        document.getElementById('result-total').textContent = total;
+    }
+
+    function restartTraining() {
+        correctCount = 0;
+        wrongCount = 0;
+        currentNum = 0;
+        document.getElementById('training-results').classList.add('hidden');
+        document.getElementById('training-area').classList.remove('hidden');
         startTraining();
+    }
+
+    startTraining();
     </script>
 </body>
 </html>

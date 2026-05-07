@@ -4,11 +4,11 @@
     "word": "PEP 8",
     "translation": "Стандарт написания кода на Python",
     "difficulty": "easy",
-    "correct": 1,
+    "correct": 2,
     "wrong": 0,
-    "srs_streak": 1,
-    "last_reviewed": "2026-04-27T19:50:06.928695",
-    "next_review": "2026-04-30T19:50:06.928742"
+    "srs_streak": 2,
+    "last_reviewed": "2026-04-27T22:58:42.565360",
+    "next_review": "2026-05-04T22:58:42.565422"
   },
   {
     "id": 2,
@@ -70,11 +70,11 @@
     "word": "Список (list)",
     "translation": "Изменяемая упорядоченная коллекция",
     "difficulty": "easy",
-    "correct": 0,
+    "correct": 1,
     "wrong": 0,
-    "srs_streak": 0,
-    "last_reviewed": null,
-    "next_review": null
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T22:59:34.375744",
+    "next_review": "2026-04-30T22:59:34.375765"
   },
   {
     "id": 8,
@@ -169,11 +169,11 @@
     "word": "len()",
     "translation": "Возвращает длину объекта",
     "difficulty": "easy",
-    "correct": 0,
-    "wrong": 0,
-    "srs_streak": 0,
-    "last_reviewed": null,
-    "next_review": null
+    "correct": 1,
+    "wrong": 1,
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T22:59:28.981536",
+    "next_review": "2026-04-30T22:59:28.981580"
   },
   {
     "id": 17,
@@ -433,11 +433,11 @@
     "word": "Лямбда-функция",
     "translation": "Анонимная функция, определяемая в одну строку с помощью lambda",
     "difficulty": "hard",
-    "correct": 0,
+    "correct": 1,
     "wrong": 0,
-    "srs_streak": 0,
-    "last_reviewed": null,
-    "next_review": null
+    "srs_streak": 1,
+    "last_reviewed": "2026-04-27T23:11:09.806343",
+    "next_review": "2026-04-30T23:11:09.806368"
   },
   {
     "id": 41,

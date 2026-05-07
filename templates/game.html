@@ -3,324 +3,359 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ game_title }} - PythonMemorio</title>
+    <title>{{ game_title }} — PythonMemorio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #667eea; --secondary: #764ba2; --success: #48bb78;
-            --danger: #f56565; --warning: #ecc94b; --bg: #f7fafc; --card: #ffffff;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .container { background: var(--card); border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 30px; width: 100%; max-width: 500px; text-align: center; position: relative; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #edf2f7; padding-bottom: 15px; }
-        .back-btn { text-decoration: none; color: #718096; font-size: 24px; }
-
-        .progress-bar { background: #edf2f7; border-radius: 10px; height: 10px; margin-bottom: 20px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
-
-        .level-info { font-size: 14px; color: #4a5568; margin-bottom: 15px; font-weight: bold; }
-
-        /* Стили для Карточки */
-        .flashcard {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .option-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(102, 126, 234, 0.15);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .option-btn:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+        .option-btn.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-radius: 20px;
-            padding: 40px 20px;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
+        }
+        .option-btn.correct {
+            border-color: #43e97b;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+        .option-btn.wrong {
+            border-color: #f5576c;
+            background: linear-gradient(135deg, #f5576c 0%, #ff6b6b 100%);
+            color: white;
+        }
+        .flashcard {
+            perspective: 1000px;
             cursor: pointer;
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-            transition: transform 0.3s;
-            user-select: none;
         }
-        .flashcard:active { transform: scale(0.98); }
-        .card-front { font-size: 24px; font-weight: bold; }
-        .card-back { display: none; font-size: 20px; margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3); width: 100%; text-align: center; }
-        .flashcard.revealed .card-front { font-size: 18px; opacity: 0.8; }
-        .flashcard.revealed .card-back { display: block; animation: fadeIn 0.3s; }
-
-        /* Стили для Викторины */
-        .question-box { font-size: 20px; font-weight: bold; margin-bottom: 25px; color: #2d3748; min-height: 60px; display: flex; align-items: center; justify-content: center; }
-        .options { display: flex; flex-direction: column; gap: 10px; }
-        .option-btn { background: white; border: 2px solid #e2e8f0; padding: 15px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; }
-        .option-btn:hover { border-color: var(--primary); background: #ebf4ff; }
-        .option-btn.correct { background: var(--success); color: white; border-color: var(--success); }
-        .option-btn.wrong { background: var(--danger); color: white; border-color: var(--danger); }
-        .option-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-
-        .feedback { margin-top: 20px; font-weight: bold; min-height: 24px; }
-        .next-btn { margin-top: 20px; background: var(--primary); color: white; border: none; padding: 12px 30px; border-radius: 25px; font-size: 16px; cursor: pointer; display: none; width: 100%; }
-
-        .result-screen { display: none; }
-        .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .result-card { background: #edf2f7; padding: 15px; border-radius: 10px; }
-        .account-points { color: var(--warning); font-weight: bold; font-size: 18px; margin-top: 10px; }
-
-        /* Стиль для SRS напоминания */
-        .srs-reminder {
-            background: #fed7d7;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            color: #c53030;
-            animation: fadeIn 0.5s;
+        .flashcard-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
         }
-        .srs-reminder a {
-            color: #c53030;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 5px;
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
         }
-        .srs-reminder a:hover {
-            text-decoration: underline;
+        .flashcard-front, .flashcard-back {
+            backface-visibility: hidden;
         }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .flashcard-back {
+            transform: rotateY(180deg);
+        }
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            background-size: 200% 100%;
+            animation: gradient 3s ease infinite;
+            transition: width 0.5s ease;
+        }
     </style>
 </head>
-<body>
-<div class="container">
-    <div class="header">
-        <a href="/" class="back-btn">←</a>
-        <h2 id="game-title">{{ game_title }}</h2>
-        <div style="width: 24px;"></div>
-    </div>
+<body class="px-4 py-6 md:px-8">
 
-    <div class="level-info" id="level-info">Уровень: 1</div>
-    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="max-w-3xl mx-auto">
 
-    <div id="game-screen">
-        <!-- Режим Карточки -->
-        <div id="flashcard-mode" style="display: none;">
-            <div class="flashcard" id="flashcard" onclick="revealCard()">
-                <div class="card-front" id="card-question">Загрузка...</div>
-                <div class="card-back" id="card-answer"></div>
+        <!-- Header -->
+        <div class="glass-card rounded-2xl p-4 md:p-5 mb-6 shadow-xl flex items-center justify-between" data-aos="fade-down">
+            <a href="/" class="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors font-bold">
+                <i class="fas fa-arrow-left text-lg"></i>
+                <span class="hidden sm:inline">На главную</span>
+            </a>
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-600 rounded-xl flex items-center justify-center text-white text-sm shadow-md">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div>
+                    <div class="font-black text-lg gradient-text">{{ game_title }}</div>
+                    <div class="text-xs text-gray-500 font-semibold" id="level-display">Уровень: 1</div>
+                </div>
             </div>
-            <div style="color: #a0aec0; font-size: 14px;" id="card-hint">👆 Нажми на карточку</div>
+            <div class="text-sm font-bold text-gray-500" id="question-counter">1/10</div>
         </div>
 
-        <!-- Режим Викторины -->
-        <div id="quiz-mode" style="display: none;">
-            <div class="question-box" id="question-text">Загрузка...</div>
-            <div class="options" id="options-container"></div>
-            <div class="feedback" id="feedback"></div>
+        <!-- Progress Bar -->
+        <div class="progress-bar h-3 mb-6 shadow-inner" data-aos="fade-up" data-aos-delay="100">
+            <div class="progress-fill h-full rounded-full" id="progress-bar" style="width: 0%"></div>
         </div>
 
-        <button class="next-btn" id="next-btn" onclick="loadNextQuestion()">➡️ Далее</button>
+        <!-- Игровая область -->
+        <div id="game-area" data-aos="zoom-in" data-aos-duration="600">
+
+            <!-- Викторина / Тренировка -->
+            <div id="quiz-mode" class="hidden">
+                <div class="glass-card rounded-3xl p-8 md:p-10 shadow-2xl mb-6">
+                    <div class="text-center mb-8">
+                        <div class="inline-block bg-gradient-to-br from-blue-100 to-purple-100 px-4 py-2 rounded-full text-sm font-bold text-blue-700 mb-4">
+                            <i class="fas fa-question-circle mr-1"></i>Вопрос <span id="q-number">1</span> из <span id="q-total">10</span>
+                        </div>
+                        <h2 class="text-xl md:text-2xl font-black text-gray-800" id="question-text">Загрузка...</h2>
+                    </div>
+                    <div class="grid grid-cols-1 gap-3" id="options-container">
+                        <!-- Варианты ответов -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карточки -->
+            <div id="cards-mode" class="hidden">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-inner relative w-full" style="min-height: 300px;">
+                        <div class="flashcard-front glass-card rounded-3xl p-8 md:p-12 shadow-2xl flex flex-col items-center justify-center min-h-[300px]">
+                            <div class="text-sm font-bold text-blue-500 mb-4 uppercase tracking-wider">
+                                <i class="fas fa-hand-pointer mr-1"></i>Нажми чтобы увидеть ответ
+                            </div>
+                            <h2 class="text-2xl md:text-3xl font-black text-gray-800 text-center" id="card-front">Загрузка...</h2>
+                            <div class="mt-6 text-sm text-gray-400 font-semibold" id="card-counter">Карточка 1 из 15</div>
+                        </div>
+                        <div class="flashcard-back absolute inset-0 glass-card rounded-3xl p-8 md:p-12 shadow-2xl flex flex-col items-center justify-center min-h-[300px] bg-gradient-to-br from-green-50 to-emerald-50">
+                            <div class="text-sm font-bold text-green-500 mb-4 uppercase tracking-wider">
+                                <i class="fas fa-lightbulb mr-1"></i>Ответ
+                            </div>
+                            <h2 class="text-2xl md:text-3xl font-black text-gray-800 text-center" id="card-back">Загрузка...</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center mt-6 gap-3">
+                    <button onclick="nextCard(false)" class="px-6 py-3 rounded-xl font-bold text-red-600 bg-red-50 hover:bg-red-100 transition-all border border-red-200">
+                        <i class="fas fa-times mr-1"></i>Не помню
+                    </button>
+                    <button onclick="nextCard(true)" class="px-6 py-3 rounded-xl font-bold text-green-600 bg-green-50 hover:bg-green-100 transition-all border border-green-200">
+                        <i class="fas fa-check mr-1"></i>Помню!
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Результаты -->
+        <div id="results-screen" class="hidden">
+            <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl text-center" data-aos="zoom-in">
+                <div class="text-6xl mb-4">🎉</div>
+                <h2 class="text-3xl font-black gradient-text mb-2">Отлично!</h2>
+                <p class="text-gray-500 font-medium mb-8">Викторина завершена</p>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-green-50 rounded-2xl p-4 border border-green-200">
+                        <div class="text-3xl font-black text-green-600" id="result-correct">0</div>
+                        <div class="text-xs text-green-700 font-semibold uppercase">Верно ✅</div>
+                    </div>
+                    <div class="bg-red-50 rounded-2xl p-4 border border-red-200">
+                        <div class="text-3xl font-black text-red-500" id="result-wrong">0</div>
+                        <div class="text-xs text-red-600 font-semibold uppercase">Ошибок ❌</div>
+                    </div>
+                    <div class="bg-blue-50 rounded-2xl p-4 border border-blue-200">
+                        <div class="text-3xl font-black text-blue-600" id="result-xp">+0</div>
+                        <div class="text-xs text-blue-700 font-semibold uppercase">Опыт ⭐</div>
+                    </div>
+                    <div class="bg-yellow-50 rounded-2xl p-4 border border-yellow-200">
+                        <div class="text-3xl font-black text-yellow-600" id="result-points">+0</div>
+                        <div class="text-xs text-yellow-700 font-semibold uppercase">Баллы 🏆</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="restartGame()" class="px-8 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                        <i class="fas fa-redo mr-2"></i>Заново
+                    </button>
+                    <a href="/" class="px-8 py-3 rounded-xl font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all">
+                        <i class="fas fa-home mr-2"></i>На главную
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <div class="result-screen" id="result-screen">
-        <h2 style="color: var(--secondary);">🎉 Готово!</h2>
-        <div class="result-stats">
-            <div class="result-card"><div>Верно</div><div style="font-size:24px; font-weight:bold" id="res-correct">0</div></div>
-            <div class="result-card"><div>Опыт</div><div style="font-size:24px; font-weight:bold; color:var(--success)" id="res-xp">+0</div></div>
-        </div>
-        <div class="account-points" id="res-account">+0 Баллов Аккаунта 🏆</div>
-        <div id="srs-reminder-container"></div>
-        <br>
-        <button class="next-btn" style="display:inline-block" onclick="restartGame()">🔄 Заново</button>
-        <br><br><a href="/" style="color:var(--primary)">🏠 На главную</a>
-    </div>
-</div>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ once: true });</script>
 
-<script>
-    const GAME_NAME = "{{ game_name }}";
-    let currentGameId = null;
-    let currentQuestionData = null;
-    let totalQuestions = 0;
-    let currentQuestionIndex = 0;
+    <script>
+    const gameName = "{{ game_name }}";
+    const gameTitle = "{{ game_title }}";
+    let gameId = null;
+    let currentQuestion = null;
+    let totalQuestions = 10;
+    let currentNum = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
+    let totalXp = 0;
+    let totalPoints = 0;
+    let isFlipped = false;
 
-    const progressFill = document.getElementById('progress-fill');
-    const levelInfo = document.getElementById('level-info');
-    const nextBtn = document.getElementById('next-btn');
+    // Определение режима
+    const isCards = gameName === 'cards';
+    const isQuiz = gameName === 'quiz';
 
-    // Настройка UI
-    if (GAME_NAME === 'cards') {
-        document.getElementById('flashcard-mode').style.display = 'block';
-        document.getElementById('game-title').innerText = "📇 Тренировка (Все уровни)";
-        document.getElementById('level-info').style.display = 'none';
-    } else {
-        document.getElementById('quiz-mode').style.display = 'block';
-    }
+    // Показать нужный режим
+    document.getElementById('quiz-mode').classList.toggle('hidden', !isQuiz && !isCards);
+    document.getElementById('cards-mode').classList.toggle('hidden', !isCards);
 
-    startGame();
-
+    // Старт игры
     async function startGame() {
-        try {
-            if (GAME_NAME !== 'cards') {
-                const progRes = await fetch(`/api/game/${GAME_NAME}/progress`);
-                const progData = await progRes.json();
-                levelInfo.textContent = `Уровень игры: ${progData.level}`;
-            }
+        const resp = await fetch('/api/game/start', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ game_name: gameName })
+        });
+        const data = await resp.json();
+        gameId = data.game_id;
+        totalQuestions = data.total_questions || 10;
+        document.getElementById('q-total').textContent = totalQuestions;
+        loadQuestion();
+    }
 
-            const response = await fetch('/api/game/start', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ game_name: GAME_NAME })
+    async function loadQuestion() {
+        const resp = await fetch(`/api/game/question/${gameId}`);
+        const data = await resp.json();
+        if (data.finished) {
+            showResults();
+            return;
+        }
+        currentQuestion = data;
+        currentNum = data.question_number;
+
+        document.getElementById('q-number').textContent = currentNum;
+        document.getElementById('question-counter').textContent = `${currentNum}/${totalQuestions}`;
+        document.getElementById('progress-bar').style.width = `${(currentNum / totalQuestions) * 100}%`;
+
+        if (isCards) {
+            document.getElementById('card-front').textContent = data.question;
+            document.getElementById('card-back').textContent = data.answer;
+            document.getElementById('card-counter').textContent = `Карточка ${currentNum} из ${totalQuestions}`;
+            isFlipped = false;
+            document.getElementById('flashcard').classList.remove('flipped');
+        } else {
+            document.getElementById('question-text').textContent = data.question;
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            data.options.forEach((opt, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn w-full text-left px-6 py-4 rounded-xl font-semibold text-gray-700 text-lg';
+                btn.textContent = opt;
+                btn.onclick = () => submitAnswer(opt, btn);
+                container.appendChild(btn);
             });
-            const data = await response.json();
-            currentGameId = data.game_id;
-            totalQuestions = data.total_questions;
-            loadNextQuestion();
-        } catch (e) { console.error("Ошибка старта", e); }
+        }
+
+        // Анимация
+        AOS.refresh();
     }
 
-    function updateProgress(val) {
-        progressFill.style.width = (val / totalQuestions * 100) + '%';
+    function flipCard() {
+        isFlipped = !isFlipped;
+        document.getElementById('flashcard').classList.toggle('flipped');
     }
 
-    async function loadNextQuestion() {
-        nextBtn.style.display = 'none';
-        document.getElementById('feedback').textContent = '';
-
-        const flashcard = document.getElementById('flashcard');
-        flashcard.classList.remove('revealed');
-        document.getElementById('card-hint').style.display = 'block';
-
-        const opts = document.getElementById('options-container');
-        opts.innerHTML = '';
-
-        try {
-            const response = await fetch(`/api/game/question/${currentGameId}`);
-            const data = await response.json();
-
-            if (data.finished) { showResults(); return; }
-
-            currentQuestionData = data;
-            currentQuestionIndex = data.question_number;
-            updateProgress(currentQuestionIndex - 1);
-
-            if (GAME_NAME === 'cards') {
-                document.getElementById('card-question').textContent = data.question;
-                document.getElementById('card-answer').textContent = data.answer;
-            } else {
-                document.getElementById('question-text').textContent = data.question;
-                data.options.forEach(opt => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.textContent = opt;
-                    btn.onclick = () => submitAnswer(opt, btn);
-                    opts.appendChild(btn);
-                });
-            }
-        } catch (e) { console.error("Ошибка", e); }
-    }
-
-    function revealCard() {
-        if (document.getElementById('flashcard').classList.contains('revealed')) return;
-
-        const flashcard = document.getElementById('flashcard');
-        flashcard.classList.add('revealed');
-        document.getElementById('card-hint').style.display = 'none';
-        nextBtn.style.display = 'inline-block';
-
-        fetch('/api/game/answer', {
+    async function nextCard(knewIt) {
+        if (!isFlipped && !knewIt) {
+            flipCard();
+            return;
+        }
+        await fetch('/api/game/answer', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                game_id: currentGameId,
-                game_name: GAME_NAME,
-                word_id: currentQuestionData.word_id,
-                answer: "viewed"
+                game_id: gameId,
+                word_id: currentQuestion.word_id,
+                answer: 'viewed'
             })
         });
+        loadQuestion();
     }
 
-    async function submitAnswer(selectedAnswer, btnElement) {
-        const buttons = document.querySelectorAll('.option-btn');
-        buttons.forEach(b => b.disabled = true);
+    async function submitAnswer(selected, btnElement) {
+        // Блокируем все кнопки
+        document.querySelectorAll('.option-btn').forEach(b => b.onclick = null);
 
-        let isCorrect = (selectedAnswer === currentQuestionData.correct_answer);
+        const isCorrect = selected === currentQuestion.correct_answer;
 
-        if (btnElement) {
-            if (isCorrect) btnElement.classList.add('correct');
-            else {
-                btnElement.classList.add('wrong');
-                buttons.forEach(b => { if(b.textContent === currentQuestionData.correct_answer) b.classList.add('correct'); });
-            }
+        if (isCorrect) {
+            btnElement.classList.add('correct');
+            correctCount++;
+        } else {
+            btnElement.classList.add('wrong');
+            wrongCount++;
+            // Подсветить правильный
+            document.querySelectorAll('.option-btn').forEach(b => {
+                if (b.textContent === currentQuestion.correct_answer) b.classList.add('correct');
+            });
         }
 
-        try {
-            const response = await fetch('/api/game/answer', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    game_id: currentGameId,
-                    game_name: GAME_NAME,
-                    word_id: currentQuestionData.word_id,
-                    answer: selectedAnswer
-                })
-            });
-            const data = await response.json();
+        const resp = await fetch('/api/game/answer', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                game_id: gameId,
+                game_name: gameName,
+                word_id: currentQuestion.word_id,
+                answer: selected
+            })
+        });
+        const data = await resp.json();
 
-            const feedback = document.getElementById('feedback');
-            if (data.is_correct) {
-                feedback.textContent = "✅ Верно!";
-                feedback.style.color = 'var(--success)';
-            } else {
-                feedback.textContent = `❌ Неверно. ${data.correct_answer}`;
-                feedback.style.color = 'var(--danger)';
-            }
-            nextBtn.style.display = 'inline-block';
-        } catch (e) { console.error("Ошибка отправки", e); }
+        if (data.xp_earned) totalXp += data.xp_earned;
+        if (data.game_progress) totalPoints += data.xp_earned;
+
+        setTimeout(() => loadQuestion(), isCorrect ? 800 : 1500);
     }
 
     function showResults() {
-        document.getElementById('game-screen').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'block';
-        progressFill.style.width = '100%';
-
-        fetch(`/api/game/${currentGameId}/results`)
-            .then(r => r.json())
-            .then(data => {
-                document.getElementById('res-correct').textContent = data.correct;
-                document.getElementById('res-xp').textContent = "+" + data.xp_earned;
-                document.getElementById('res-account').textContent = "+" + data.xp_earned + " Баллов Аккаунта 🏆";
-
-                // Обновляем SRS после игры
-                updateSrsAfterGame();
-            });
-    }
-
-    // Функция обновления SRS после игры
-    function updateSrsAfterGame() {
-        fetch('/api/srs/stats')
-            .then(r => r.json())
-            .then(stats => {
-                const reminderContainer = document.getElementById('srs-reminder-container');
-                if (stats.due_now > 0) {
-                    // Показываем сообщение о необходимости повторения
-                    reminderContainer.innerHTML = `
-                        <div class="srs-reminder">
-                            <strong>⚠️ Не забудьте повторить слова!</strong><br>
-                            ${stats.due_now} слов требуют повторения.
-                            <br>
-                            <a href="/">🔔 Перейти к повторению</a>
-                        </div>
-                    `;
-                } else if (stats.due_today > 0) {
-                    reminderContainer.innerHTML = `
-                        <div class="srs-reminder" style="background: #fefcbf; color: #975a16;">
-                            <strong>📅 Сегодня нужно повторить ${stats.due_today} слов</strong>
-                            <br>
-                            <a href="/" style="color: #975a16;">🔔 Перейти к повторению</a>
-                        </div>
-                    `;
-                }
-            })
-            .catch(err => console.error('Ошибка загрузки SRS статистики:', err));
+        document.getElementById('game-area').classList.add('hidden');
+        document.getElementById('results-screen').classList.remove('hidden');
+        document.getElementById('result-correct').textContent = correctCount;
+        document.getElementById('result-wrong').textContent = wrongCount;
+        document.getElementById('result-xp').textContent = `+${totalXp}`;
+        document.getElementById('result-points').textContent = `+${totalPoints}`;
     }
 
     function restartGame() {
-        document.getElementById('result-screen').style.display = 'none';
-        document.getElementById('game-screen').style.display = 'block';
-        document.getElementById('srs-reminder-container').innerHTML = '';
+        correctCount = 0;
+        wrongCount = 0;
+        totalXp = 0;
+        totalPoints = 0;
+        currentNum = 0;
+        document.getElementById('results-screen').classList.add('hidden');
+        document.getElementById('game-area').classList.remove('hidden');
         startGame();
     }
-</script>
+
+    // Загрузка уровня
+    fetch(`/api/game/${gameName}/progress`)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('level-display').textContent = `Уровень: ${data.level || 1}`;
+        });
+
+    startGame();
+    </script>
 </body>
 </html>

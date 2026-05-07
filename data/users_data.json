@@ -243,6 +243,215 @@
         "difficulty": "easy",
         "correct": 1,
         "wrong": 0
+      },
+      {
+        "id": 31,
+        "word": "Максимум из списка",
+        "translation": "max()",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:49.999728",
+        "next_review": null
+      },
+      {
+        "id": 32,
+        "word": "Функция ввода",
+        "translation": "input()",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.007665",
+        "next_review": null
+      },
+      {
+        "id": 33,
+        "word": "def f(): pass",
+        "translation": "Пустая функция",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.014213",
+        "next_review": null
+      },
+      {
+        "id": 34,
+        "word": "Объединение списков",
+        "translation": "zip()",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.020768",
+        "next_review": null
+      },
+      {
+        "id": 35,
+        "word": "Абсолютное число",
+        "translation": "abs()",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.025512",
+        "next_review": null
+      },
+      {
+        "id": 36,
+        "word": "int('10') + 5",
+        "translation": "15",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.030492",
+        "next_review": null
+      },
+      {
+        "id": 37,
+        "word": "Булевы значения",
+        "translation": "True, False",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.035743",
+        "next_review": null
+      },
+      {
+        "id": 38,
+        "word": "Срез строки",
+        "translation": "[start:stop]",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.040768",
+        "next_review": null
+      },
+      {
+        "id": 39,
+        "word": "True and False",
+        "translation": "False",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T23:10:50.043692",
+        "next_review": null
+      },
+      {
+        "id": 40,
+        "word": "with open(...) as f:",
+        "translation": "Контекстный менеджер",
+        "difficulty": "easy",
+        "correct": 0,
+        "wrong": 1,
+        "srs_streak": 0,
+        "last_reviewed": "2026-04-27T23:10:50.049063",
+        "next_review": null
+      },
+      {
+        "id": 41,
+        "word": "Обработка ошибок",
+        "translation": "try/except",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.052734",
+        "next_review": null
+      },
+      {
+        "id": 42,
+        "word": "Сравнение на равенство",
+        "translation": "==",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.055716",
+        "next_review": null
+      },
+      {
+        "id": 43,
+        "word": "print(1, 2)",
+        "translation": "1 2",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.058711",
+        "next_review": null
+      },
+      {
+        "id": 44,
+        "word": "Нумерация списка",
+        "translation": "enumerate()",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.064806",
+        "next_review": null
+      },
+      {
+        "id": 45,
+        "word": "Множество уникальных",
+        "translation": "set",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.071398",
+        "next_review": null
+      },
+      {
+        "id": 46,
+        "word": "Условный оператор",
+        "translation": "if",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.075300",
+        "next_review": null
+      },
+      {
+        "id": 47,
+        "word": "filter(bool, [0, 1])",
+        "translation": "Фильтрация",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.079026",
+        "next_review": null
+      },
+      {
+        "id": 48,
+        "word": "'abc'.upper()",
+        "translation": "ABC",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.082923",
+        "next_review": null
+      },
+      {
+        "id": 49,
+        "word": "Генератор списка",
+        "translation": "[... for ...]",
+        "difficulty": "easy",
+        "correct": 1,
+        "wrong": 0,
+        "srs_streak": 1,
+        "last_reviewed": "2026-04-27T23:10:50.087393",
+        "next_review": null
       }
     ],
     "training_sessions": {},
@@ -277,14 +486,14 @@
         "xp_per_correct": 5
       }
     },
-    "account_points": 431,
+    "account_points": 535,
     "sprint_record": 21,
-    "account_level": 3,
+    "account_level": 4,
     "global_stats": {
       "quiz_played": 2,
-      "sprint_played": 0,
-      "total_correct": 11,
-      "total_wrong": 9
+      "sprint_played": 2,
+      "total_correct": 45,
+      "total_wrong": 13
     }
   },
   "nikita": {

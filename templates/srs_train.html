@@ -3,387 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Повторение слов - PythonMemorio</title>
+    <title>Повторение SRS — PythonMemorio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root {
-            --primary: #667eea; --secondary: #764ba2; --success: #48bb78;
-            --danger: #f56565; --bg: #f7fafc; --card: #ffffff;
-        }
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: var(--bg);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #f093fb, #f5576c, #fa709a, #fee140);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
             min-height: 100vh;
         }
-        .container {
-            background: var(--card);
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            padding: 30px;
-            width: 100%;
-            max-width: 500px;
-            text-align: center;
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #edf2f7;
-            padding-bottom: 15px;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
-        .back-btn {
-            text-decoration: none;
-            color: #718096;
-            font-size: 24px;
+        .option-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(240, 147, 251, 0.2);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .option-btn:hover {
+            border-color: #f093fb;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.2);
+        }
+        .option-btn.correct {
+            border-color: #43e97b;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+        .option-btn.wrong {
+            border-color: #f5576c;
+            background: linear-gradient(135deg, #f5576c 0%, #ff6b6b 100%);
+            color: white;
         }
         .progress-bar {
-            background: #edf2f7;
-            border-radius: 10px;
-            height: 10px;
-            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 999px;
             overflow: hidden;
         }
         .progress-fill {
-            height: 100%;
-            background: var(--primary);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        .word-card {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border-radius: 20px;
-            padding: 40px 20px;
-            min-height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-            transition: transform 0.3s;
-            user-select: none;
-        }
-        .word-card:active { transform: scale(0.98); }
-        .word-text {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        .translation-text {
-            font-size: 20px;
-            opacity: 0;
-            transition: opacity 0.5s;
-            border-top: 1px solid rgba(255,255,255,0.3);
-            padding-top: 15px;
-            width: 100%;
-            text-align: center;
-        }
-        .translation-text.revealed {
-            opacity: 1;
-        }
-        .hint {
-            color: #a0aec0;
-            font-size: 14px;
-            margin-bottom: 15px;
-        }
-        .buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        .btn {
-            flex: 1;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-forgot {
-            background: var(--danger);
-            color: white;
-        }
-        .btn-remember {
-            background: var(--success);
-            color: white;
-        }
-        .btn:hover:not(:disabled) {
-            transform: scale(1.02);
-            opacity: 0.9;
-        }
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .stats {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #4a5568;
-        }
-        .streak-info {
-            font-size: 12px;
-            color: #a0aec0;
-            margin-top: 10px;
-        }
-        .finished-screen {
-            display: none;
-        }
-        .finished-screen h2 {
-            color: var(--secondary);
-        }
-        .finished-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        .finished-stat {
-            background: #edf2f7;
-            padding: 15px;
-            border-radius: 10px;
-        }
-        .finished-stat .value {
-            font-size: 28px;
-            font-weight: bold;
-        }
-        .finished-stat .label {
-            font-size: 12px;
-            color: #718096;
-            margin-top: 5px;
-        }
-        .srs-info {
-            background: #ebf8ff;
-            border: 1px solid #bee3f8;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            font-size: 13px;
-            color: #2b6cb0;
-            line-height: 1.5;
+            background: linear-gradient(90deg, #f093fb, #f5576c, #fa709a);
+            background-size: 200% 100%;
+            animation: gradient 3s ease infinite;
+            transition: width 0.5s ease;
         }
     </style>
 </head>
-<body>
-<div class="container">
-    <div class="header">
-        <a href="/" class="back-btn">←</a>
-        <h2>📚 Повторение</h2>
-        <div style="width: 24px;"></div>
-    </div>
+<body class="px-4 py-6 md:px-8">
 
-    <div id="training-screen">
-        <div class="progress-bar">
-            <div class="progress-fill" id="progress-fill"></div>
-        </div>
+    <div class="max-w-3xl mx-auto">
 
-        <div class="word-card" id="word-card" onclick="revealTranslation()">
-            <div class="word-text" id="word-text">Загрузка...</div>
-            <div class="translation-text" id="translation-text"></div>
-        </div>
-
-        <div class="hint" id="hint">👆 Нажми на карточку чтобы увидеть перевод</div>
-        <div class="streak-info" id="streak-info"></div>
-
-        <div class="buttons" id="answer-buttons" style="display: none;">
-            <button class="btn btn-forgot" id="btn-forgot" onclick="answerWord(false)">😕 Забыл</button>
-            <button class="btn btn-remember" id="btn-remember" onclick="answerWord(true)">✅ Помню</button>
-        </div>
-
-        <div class="stats">
-            Слово <span id="current-number">1</span> из <span id="total-number">10</span>
-        </div>
-    </div>
-
-    <div class="finished-screen" id="finished-screen">
-        <h2>🎉 Повторение завершено!</h2>
-        <div class="finished-stats">
-            <div class="finished-stat">
-                <div class="value" style="color: var(--success);" id="remembered-count">0</div>
-                <div class="label">✅ Вспомнил</div>
+        <!-- Header -->
+        <div class="glass-card rounded-2xl p-4 md:p-5 mb-6 shadow-xl flex items-center justify-between" data-aos="fade-down">
+            <a href="/" class="flex items-center gap-2 text-gray-600 hover:text-pink-500 transition-colors font-bold">
+                <i class="fas fa-arrow-left text-lg"></i>
+                <span class="hidden sm:inline">На главную</span>
+            </a>
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-pink-400 to-rose-600 rounded-xl flex items-center justify-center text-white text-sm shadow-md animate-pulse">
+                    <i class="fas fa-redo"></i>
+                </div>
+                <div>
+                    <div class="font-black text-lg" style="background:linear-gradient(135deg,#f093fb,#f5576c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Повторение</h2>
+                    <div class="text-xs text-gray-500 font-semibold">SRS интервальное повторение</div>
+                </div>
             </div>
-            <div class="finished-stat">
-                <div class="value" style="color: var(--danger);" id="forgot-count">0</div>
-                <div class="label">😕 Забыл</div>
+            <div class="text-sm font-bold text-gray-500" id="counter">0/0</div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-bar h-3 mb-6 shadow-inner" data-aos="fade-up" data-aos-delay="100">
+            <div class="progress-fill h-full rounded-full" id="progress-bar" style="width: 0%"></div>
+        </div>
+
+        <!-- Игровая область -->
+        <div id="srs-area" data-aos="zoom-in" data-aos-duration="600">
+            <div class="glass-card rounded-3xl p-8 md:p-10 shadow-2xl">
+                <div class="text-center mb-8">
+                    <div class="inline-block bg-gradient-to-br from-pink-100 to-rose-100 px-4 py-2 rounded-full text-sm font-bold text-pink-700 mb-4">
+                        <i class="fas fa-redo mr-1"></i>Вопрос <span id="q-number">1</span> из <span id="q-total">10</span>
+                    </div>
+                    <h2 class="text-xl md:text-2xl font-black text-gray-800" id="question-text">Загрузка...</h2>
+                </div>
+                <div class="grid grid-cols-1 gap-3" id="options-container">
+                    <!-- Варианты -->
+                </div>
             </div>
         </div>
-        <div class="srs-info" id="srs-info">
-            📊 Слова распределены по интервалам SRS.<br>
-            Следующие повторения будут доступны позже.
-        </div>
-        <br>
-        <button class="btn btn-remember" onclick="window.location.href='/'">🏠 На главную</button>
-    </div>
-</div>
 
-<script>
+        <!-- Результаты -->
+        <div id="srs-results" class="hidden">
+            <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl text-center" data-aos="zoom-in">
+                <div class="text-6xl mb-4">🎉</div>
+                <h2 class="text-3xl font-black text-gray-800 mb-2">Повторение завершено!</h2>
+                <p class="text-gray-500 font-medium mb-2">Слова распределены по интервалам SRS</p>
+                <p class="text-gray-400 text-sm mb-8">Следующие повторения будут доступны позже</p>
+
+                <div class="grid grid-cols-2 gap-4 mb-8">
+                    <div class="bg-green-50 rounded-2xl p-4 border border-green-200">
+                        <div class="text-3xl font-black text-green-600" id="result-correct">0</div>
+                        <div class="text-xs text-green-700 font-semibold uppercase">Вспомнил ✅</div>
+                    </div>
+                    <div class="bg-red-50 rounded-2xl p-4 border border-red-200">
+                        <div class="text-3xl font-black text-red-500" id="result-wrong">0</div>
+                        <div class="text-xs text-red-600 font-semibold uppercase">Забыл 😕</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <a href="/" class="px-8 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-pink-500 to-rose-600 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                        <i class="fas fa-home mr-2"></i>На главную
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ once: true });</script>
+
+    <script>
     let sessionId = null;
     let currentQuestion = null;
     let totalQuestions = 0;
-    let currentIndex = 0;
-    let remembered = 0;
-    let forgot = 0;
-    let revealed = false;
-    let isAnswering = false;
+    let currentNum = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
 
-    // Получаем session_id из URL
-    const urlParams = new URLSearchParams(window.location.search);
-    sessionId = urlParams.get('session');
+    async function startSRSTraining() {
+        // Проверяем, есть ли session_id в URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlSession = urlParams.get('session');
 
-    if (!sessionId) {
-        alert('Ошибка: нет сессии для повторения');
-        window.location.href = '/';
-    } else {
-        console.log('Начинаем повторение SRS, сессия:', sessionId);
+        if (urlSession) {
+            sessionId = urlSession;
+            loadQuestion();
+            return;
+        }
+
+        // Иначе создаём новую сессию
+        const resp = await fetch('/api/training/srs', {
+            method: 'GET'
+        });
+        const data = await resp.json();
+        if (data.error) {
+            alert(data.error);
+            window.location.href = '/';
+            return;
+        }
+        sessionId = data.session_id;
+        totalQuestions = data.words_count;
+        document.getElementById('q-total').textContent = totalQuestions;
         loadQuestion();
     }
 
     async function loadQuestion() {
-        // Сбрасываем состояние для нового вопроса
-        revealed = false;
-        isAnswering = false;
-
-        document.getElementById('translation-text').classList.remove('revealed');
-        document.getElementById('answer-buttons').style.display = 'none';
-        document.getElementById('hint').style.display = 'block';
-        document.getElementById('streak-info').textContent = '';
-
-        // Разблокируем кнопки
-        const btnForgot = document.getElementById('btn-forgot');
-        const btnRemember = document.getElementById('btn-remember');
-        if (btnForgot) btnForgot.disabled = false;
-        if (btnRemember) btnRemember.disabled = false;
-
-        try {
-            const response = await fetch(`/api/training/question/${sessionId}`);
-            const data = await response.json();
-
-            if (data.finished) {
-                finishTraining();
-                return;
-            }
-
-            if (data.error) {
-                alert('Ошибка: ' + data.error);
-                window.location.href = '/';
-                return;
-            }
-
-            currentQuestion = data;
-            totalQuestions = data.total_questions;
-            currentIndex = data.question_number;
-
-            document.getElementById('word-text').textContent = data.question;
-            document.getElementById('translation-text').textContent = data.correct_answer;
-            document.getElementById('current-number').textContent = currentIndex;
-            document.getElementById('total-number').textContent = totalQuestions;
-
-            // Показываем streak (уровень запоминания)
-            if (data.current_streak !== undefined) {
-                const streakEmoji = data.current_streak >= 5 ? '🔥' : data.current_streak >= 3 ? '📚' : '🆕';
-                document.getElementById('streak-info').textContent =
-                    `${streakEmoji} Уровень запоминания: ${data.current_streak}`;
-            }
-
-            const progress = ((currentIndex - 1) / totalQuestions) * 100;
-            document.getElementById('progress-fill').style.width = progress + '%';
-
-        } catch (error) {
-            console.error('Ошибка загрузки вопроса:', error);
-            document.getElementById('word-text').textContent = 'Ошибка загрузки';
+        const resp = await fetch(`/api/training/question/${sessionId}`);
+        const data = await resp.json();
+        if (data.finished) {
+            showResults();
+            return;
         }
+        currentQuestion = data;
+        currentNum = data.question_number;
+
+        if (totalQuestions === 0) totalQuestions = data.total_questions;
+
+        document.getElementById('q-number').textContent = currentNum;
+        document.getElementById('counter').textContent = `${currentNum}/${totalQuestions}`;
+        document.getElementById('progress-bar').style.width = `${(currentNum / totalQuestions) * 100}%`;
+        document.getElementById('question-text').textContent = data.question;
+
+        const container = document.getElementById('options-container');
+        container.innerHTML = '';
+        data.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn w-full text-left px-6 py-4 rounded-xl font-semibold text-gray-700 text-lg';
+            btn.textContent = opt;
+            btn.onclick = () => submitAnswer(opt, btn);
+            container.appendChild(btn);
+        });
+
+        AOS.refresh();
     }
 
-    function revealTranslation() {
-        if (revealed) return;
-        revealed = true;
-        document.getElementById('translation-text').classList.add('revealed');
-        document.getElementById('answer-buttons').style.display = 'flex';
-        document.getElementById('hint').style.display = 'none';
-    }
+    async function submitAnswer(selected, btnElement) {
+        document.querySelectorAll('.option-btn').forEach(b => b.onclick = null);
 
-    async function answerWord(isRemembered) {
-        if (!revealed || isAnswering) return;
+        const isCorrect = selected === currentQuestion.correct_answer;
 
-        isAnswering = true;
-
-        const btnForgot = document.getElementById('btn-forgot');
-        const btnRemember = document.getElementById('btn-remember');
-        if (btnForgot) btnForgot.disabled = true;
-        if (btnRemember) btnRemember.disabled = true;
-
-        if (isRemembered) {
-            remembered++;
+        if (isCorrect) {
+            btnElement.classList.add('correct');
+            correctCount++;
         } else {
-            forgot++;
-        }
-
-        try {
-            // Если "Помню" - отправляем правильный ответ
-            // Если "Забыл" - отправляем неправильный ответ
-            const answer = isRemembered ? currentQuestion.correct_answer : 'forgot';
-
-            const response = await fetch('/api/training/answer', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
-                    session_id: sessionId,
-                    word_id: currentQuestion.word_id,
-                    answer: answer
-                })
+            btnElement.classList.add('wrong');
+            wrongCount++;
+            document.querySelectorAll('.option-btn').forEach(b => {
+                if (b.textContent === currentQuestion.correct_answer) b.classList.add('correct');
             });
-
-            const result = await response.json();
-            console.log('Результат:', result);
-
-            if (result.finished) {
-                finishTraining();
-            } else {
-                await loadQuestion();
-            }
-        } catch (error) {
-            console.error('Ошибка отправки ответа:', error);
-            if (btnForgot) btnForgot.disabled = false;
-            if (btnRemember) btnRemember.disabled = false;
-            isAnswering = false;
-        }
-    }
-
-    function finishTraining() {
-        document.getElementById('training-screen').style.display = 'none';
-        document.getElementById('finished-screen').style.display = 'block';
-        document.getElementById('remembered-count').textContent = remembered;
-        document.getElementById('forgot-count').textContent = forgot;
-
-        const total = remembered + forgot;
-        const percentage = total > 0 ? Math.round((remembered / total) * 100) : 0;
-
-        // Показываем информацию о SRS
-        const srsInfo = document.getElementById('srs-info');
-        if (forgot > 0) {
-            srsInfo.innerHTML = `
-                📊 <strong>${forgot} слов</strong> нужно повторить снова сегодня.<br>
-                ${remembered > 0 ? `✅ <strong>${remembered} слов</strong> перенесены на более поздний срок.` : ''}
-                <br><br>
-                💡 Чем чаще вы правильно вспоминаете слово,<br>тем реже оно будет появляться для повторения.
-            `;
-        } else if (remembered > 0) {
-            srsInfo.innerHTML = `
-                🎉 Отлично! Все <strong>${remembered} слов</strong> вспомнены!<br>
-                Следующие повторения будут через увеличенные интервалы.
-            `;
         }
 
-        console.log(`Завершено! Помню: ${remembered}, Забыл: ${forgot}, Успешность: ${percentage}%`);
+        await fetch('/api/training/answer', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                session_id: sessionId,
+                word_id: currentQuestion.word_id,
+                answer: selected
+            })
+        });
+
+        setTimeout(() => loadQuestion(), isCorrect ? 800 : 1500);
     }
-</script>
+
+    function showResults() {
+        document.getElementById('srs-area').classList.add('hidden');
+        document.getElementById('srs-results').classList.remove('hidden');
+        document.getElementById('result-correct').textContent = correctCount;
+        document.getElementById('result-wrong').textContent = wrongCount;
+    }
+
+    startSRSTraining();
+    </script>
 </body>
 </html>

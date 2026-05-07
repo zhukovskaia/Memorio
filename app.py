@@ -64,7 +64,25 @@ def logout():
 @app.route('/')
 @login_required
 def index():
-    return render_template('index.html', username=session.get('username'))
+    username = session.get('username')
+    user_data = get_user_data(username) or {}
+    account_points = user_data.get('account_points', 0)
+    account_level = user_data.get('account_level', 1)
+    user_level = user_data.get('user_level', {}).get('current', 1)
+    stats = get_user_stats(username)
+    srs_stats = get_srs_stats(username)
+    due_now = srs_stats.get('due_now', 0)
+    due_today = srs_stats.get('due_today', 0)
+    due_week = srs_stats.get('due_this_week', 0)
+
+    return render_template('index.html',
+                           username=username,
+                           user_level=user_level,
+                           account_points=account_points,
+                           stats=stats,
+                           due_now=due_now,
+                           due_today=due_today,
+                           due_week=due_week)
 
 
 @app.route('/game/cards')
@@ -135,24 +153,18 @@ def api_game_answer():
     word_id = data.get('word_id')
     selected_answer = data.get('answer')
     result = submit_answer(game_id, word_id, selected_answer)
-
     if result.get('finished'):
         xp_earned = result.get('results', {}).get('xp_earned', 0)
-
         if game_name != 'cards':
             _, game = update_game_progress(session['username'], game_name, xp_earned)
             result['game_progress'] = game
-
         if game_name == 'quiz':
             add_account_points(session['username'], xp_earned)
-
         if game_name == 'quiz':
             correct = result.get('results', {}).get('correct', 0)
             wrong = result.get('results', {}).get('wrong', 0)
             update_global_stats(session['username'], 'quiz', correct, wrong)
-
         create_srs_for_game_words(game_id, session['username'])
-
     return jsonify(result)
 
 
@@ -179,14 +191,12 @@ def api_finish_sprint():
     data = request.json
     game_id = data['game_id']
     result = finish_sprint(game_id)
-
     if result:
         update_sprint_record(session['username'], result['correct'])
         add_account_points(session['username'], result['sprint_score'])
         update_global_stats(session['username'], 'sprint', result['correct'], result['wrong'])
         result['account_points_earned'] = result['sprint_score']
         create_srs_for_game_words(game_id, session['username'])
-
     return jsonify(result)
 
 
@@ -205,60 +215,42 @@ def api_user_stats():
     return jsonify(get_user_stats(session['username']))
 
 
-# ===== ФУНКЦИЯ СОЗДАНИЯ SRS ПОСЛЕ ИГР =====
-
 def create_srs_for_game_words(game_id, username):
-    """
-    Создает SRS уведомления для всех слов из игры.
-    Автоматически добавляет новые слова в профиль пользователя.
-    """
     from services.games import active_games
     from data.words import QUIZ_QUESTIONS
-
     game = active_games.get(game_id)
     if not game:
         print(f"[SRS] Игра {game_id} не найдена")
         return
-
     user_data = get_user_data(username)
     if not user_data:
         print(f"[SRS] Пользователь {username} не найден")
         return
-
     user_words = user_data.get('words', [])
-
     user_words_by_text = {}
     for w in user_words:
         word_text = w.get('word', '').strip().lower()
         user_words_by_text[word_text] = w
-
     quiz_words_by_text = {}
     for q in QUIZ_QUESTIONS:
         word_text = q.get('word', '').strip().lower()
         quiz_words_by_text[word_text] = q
-
     print(f"[SRS] ========================================")
     print(f"[SRS] Игра: {game_id}, тип: {game['game_type']}")
     print(f"[SRS] Пользователь: {username}")
     print(f"[SRS] Ответов в игре: {len(game.get('answers', []))}")
     print(f"[SRS] Слов у пользователя ДО: {len(user_words)}")
-
     srs_created = 0
     new_words_added = 0
     max_id = max([w.get('id', 0) for w in user_words], default=0)
-
     for answer in game.get('answers', []):
         is_correct = answer.get('is_correct')
-
         if is_correct is None:
             continue
-
         word_text = answer.get('word', '').strip().lower()
         if not word_text:
             continue
-
         user_word = user_words_by_text.get(word_text)
-
         if not user_word:
             quiz_word = quiz_words_by_text.get(word_text)
             max_id += 1
@@ -278,19 +270,15 @@ def create_srs_for_game_words(game_id, username):
             user_word = new_word
             new_words_added += 1
             print(f"[SRS] + Добавлено новое слово: '{word_text}'")
-
         current_streak = user_word.get('srs_streak', 0)
-
         if is_correct:
             user_word['correct'] = user_word.get('correct', 0) + 1
             user_word['srs_streak'] = min(9, current_streak + 1)
         else:
             user_word['wrong'] = user_word.get('wrong', 0) + 1
             user_word['srs_streak'] = max(0, current_streak - 1)
-
         user_word['last_reviewed'] = datetime.now().isoformat()
         new_streak = user_word['srs_streak']
-
         srs_info = schedule_srs_review(
             username=username,
             word_id=user_word['id'],
@@ -298,13 +286,11 @@ def create_srs_for_game_words(game_id, username):
             streak=current_streak,
             is_correct=is_correct
         )
-
         days = srs_info.get('days_until_review', 0)
         status = "🟢" if is_correct else "🔴"
         print(
             f"[SRS] {status} '{user_word.get('word')}' | streak: {current_streak}->{new_streak} | повтор через: {days} дн.")
         srs_created += 1
-
     if srs_created > 0 or new_words_added > 0:
         update_user_words(username, user_words)
         print(f"[SRS] ========================================")
@@ -313,28 +299,21 @@ def create_srs_for_game_words(game_id, username):
         print(f"[SRS] ❌ Ничего не обновлено")
 
 
-# ===== TRAINING ENDPOINTS =====
-
 @app.route('/api/training/start', methods=['POST'])
 @login_required
 def api_start_training():
     from services.training import create_training_session
-
     data = request.json
     words_count = data.get('count', 10)
-
     user_data = get_user_data(session['username'])
     user_words = user_data.get('words', []) if user_data else []
-
     if not user_words:
         return jsonify({'error': 'Нет слов для тренировки'}), 400
-
     session_obj = create_training_session(
         words_count=words_count,
         user_words=user_words,
         username=session['username']
     )
-
     return jsonify({
         'session_id': session_obj['session_id'],
         'total_questions': len(session_obj['words']),
@@ -346,7 +325,6 @@ def api_start_training():
 @login_required
 def api_get_training_question(session_id):
     from services.training import get_current_question as get_training_question
-
     question = get_training_question(session_id)
     if question:
         return jsonify(question)
@@ -357,32 +335,25 @@ def api_get_training_question(session_id):
 @login_required
 def api_training_answer():
     from services.training import submit_answer as submit_training_answer
-
     data = request.json
     session_id = data.get('session_id')
     word_id = data.get('word_id')
     selected_answer = data.get('answer')
-
     result = submit_training_answer(session_id, word_id, selected_answer)
-
     if result.get('finished'):
         correct = result.get('results', {}).get('correct', 0)
         total_xp = correct * 10
-
         if total_xp > 0:
             user_data = get_user_data(session['username'])
             if user_data:
                 user_level = user_data.get('user_level', {'current': 1, 'xp': 0, 'next_level_xp': 100})
                 user_level['xp'] = user_level.get('xp', 0) + total_xp
-
                 while user_level['xp'] >= user_level.get('next_level_xp', 100):
                     user_level['xp'] -= user_level.get('next_level_xp', 100)
                     user_level['current'] = user_level.get('current', 1) + 1
                     user_level['next_level_xp'] = int(user_level.get('next_level_xp', 100) * 1.2)
-
                 user_data['user_level'] = user_level
                 update_user_words(session['username'], user_data.get('words', []))
-
     return jsonify(result)
 
 
@@ -390,14 +361,11 @@ def api_training_answer():
 @login_required
 def api_get_training_results(session_id):
     from services.training import get_session_results
-
     results = get_session_results(session_id)
     if results:
         return jsonify(results)
     return jsonify({"error": "Session not found"}), 404
 
-
-# ===== SRS ENDPOINTS =====
 
 @app.route('/api/srs/notifications')
 @login_required
@@ -440,42 +408,29 @@ def api_mark_all_read():
 
 @app.route('/api/training/srs')
 @login_required
-
 def api_start_srs_training():
-    """Начать тренировку с словами, которые нужно повторить по SRS (только просроченные)"""
     from services.training import create_training_session, get_due_words_for_review
-
     user_data = get_user_data(session['username'])
     if not user_data:
         return jsonify({'error': 'Пользователь не найден'}), 400
-
     user_words = user_data.get('words', [])
-
     if not user_words:
         return jsonify({'error': 'Нет слов для повторения. Сыграйте в викторину или спринт!'}), 400
-
-    # Получаем ТОЛЬКО просроченные слова (due_now)
     due_words = get_due_words_for_review(session['username'], user_words, max_words=None)
-
     if not due_words:
-        # Проверяем, есть ли запланированные на сегодня
         from services.notifications import get_srs_stats
         stats = get_srs_stats(session['username'])
         if stats.get('due_today', 0) > 0:
             return jsonify({'error': f'Все слова на сегодня уже повторены! Следующие повторения позже.'}), 400
         else:
             return jsonify({'error': 'Нет слов для повторения. Все слова выучены!'}), 400
-
-    # Создаем сессию со ВСЕМИ просроченными словами
     session_obj = create_training_session(
         words_count=len(due_words),
         user_words=due_words,
         username=session['username']
     )
-
     session_id = session_obj['session_id']
     print(f"[SRS TRAINING] Создана сессия {session_id} с {len(due_words)} просроченными словами")
-
     return jsonify({
         'success': True,
         'session_id': session_id,

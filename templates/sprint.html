@@ -3,266 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Спринт - PythonMemorio</title>
+    <title>Спринт — PythonMemorio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        :root { --primary: #667eea; --secondary: #764ba2; --success: #48bb78; --danger: #f56565; --warning: #ecc94b; --bg: #f7fafc; --card: #ffffff; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .container { background: var(--card); border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); padding: 30px; width: 100%; max-width: 500px; text-align: center; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #edf2f7; padding-bottom: 15px; }
-        .back-btn { text-decoration: none; color: #718096; font-size: 24px; }
-
-        .level-select { margin: 20px 0; }
-        .level-btn { background: var(--primary); color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 20px; cursor: pointer; font-size: 16px; }
-        .level-btn:hover { background: var(--secondary); }
-        .level-btn.selected { background: var(--success); box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.4); }
-
-        .game-ui { display: none; }
-        .timer-bar { background: #edf2f7; border-radius: 10px; height: 12px; margin-bottom: 15px; overflow: hidden; }
-        .timer-fill { height: 100%; background: var(--primary); width: 100%; transition: width 1s linear; }
-        .timer-fill.urgent { background: var(--danger); }
-
-        .stats-row { display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: bold; color: #4a5568; }
-        .combo-badge { background: var(--warning); color: #744210; padding: 2px 8px; border-radius: 10px; display: none; }
-
-        .question-box { font-size: 20px; font-weight: bold; margin-bottom: 25px; color: #2d3748; min-height: 60px; }
-        .options { display: flex; flex-direction: column; gap: 10px; }
-        .option-btn { background: white; border: 2px solid #e2e8f0; padding: 15px; border-radius: 10px; font-size: 16px; cursor: pointer; transition: 0.2s; }
-        .option-btn:hover { border-color: var(--primary); background: #ebf4ff; }
-        .option-btn.correct { background: var(--success); color: white; border-color: var(--success); }
-        .option-btn.wrong { background: var(--danger); color: white; border-color: var(--danger); }
-        .option-btn:disabled { opacity: 0.7; cursor: not-allowed; }
-
-        .feedback { margin-top: 15px; font-weight: bold; min-height: 24px; }
-
-        .result-screen { display: none; }
-        .result-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
-        .result-card { background: #edf2f7; padding: 15px; border-radius: 10px; }
-        .record-badge { color: var(--warning); font-weight: bold; font-size: 18px; margin-top: 10px; }
-
-        /* Стиль для SRS напоминания */
-        .srs-reminder {
-            background: #fed7d7;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            color: #c53030;
-            animation: fadeIn 0.5s;
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #fa709a, #fee140, #f5576c, #ff9a9e);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
         }
-        .srs-reminder a {
-            color: #c53030;
-            font-weight: bold;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 5px;
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-        .srs-reminder a:hover {
-            text-decoration: underline;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .option-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(245, 87, 108, 0.15);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .option-btn:hover {
+            border-color: #f5576c;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 87, 108, 0.2);
+        }
+        .option-btn.correct {
+            border-color: #43e97b;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+        .option-btn.wrong {
+            border-color: #f5576c;
+            background: linear-gradient(135deg, #f5576c 0%, #ff6b6b 100%);
+            color: white;
+        }
+        .level-btn {
+            transition: all 0.3s ease;
+        }
+        .level-btn:hover, .level-btn.active {
+            transform: scale(1.15);
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4);
+        }
+        .timer-glow {
+            text-shadow: 0 0 20px rgba(245, 87, 108, 0.5);
+        }
+        .score-pop {
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .streak-fire {
+            animation: firePulse 0.5s ease;
+        }
+        @keyframes firePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
     </style>
 </head>
-<body>
-<div class="container">
-    <div class="header">
-        <a href="/" class="back-btn">←</a>
-        <h2>⚡ Спринт</h2>
-        <div style="width: 24px;"></div>
-    </div>
+<body class="px-4 py-6 md:px-8">
 
-    <div id="setup-screen">
-        <p>Выберите уровень сложности:</p>
-        <div class="level-select" id="level-buttons">
-            <button class="level-btn" onclick="selectLevel(1)">1</button>
-            <button class="level-btn" onclick="selectLevel(2)">2</button>
-            <button class="level-btn" onclick="selectLevel(3)">3</button>
-            <button class="level-btn" onclick="selectLevel(4)">4</button>
-            <button class="level-btn" onclick="selectLevel(5)">5</button>
+    <div class="max-w-3xl mx-auto">
+
+        <!-- Header -->
+        <div class="glass-card rounded-2xl p-4 md:p-5 mb-6 shadow-xl flex items-center justify-between" data-aos="fade-down">
+            <a href="/" class="flex items-center gap-2 text-gray-600 hover:text-red-500 transition-colors font-bold">
+                <i class="fas fa-arrow-left text-lg"></i>
+                <span class="hidden sm:inline">На главную</span>
+            </a>
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-orange-400 to-red-600 rounded-xl flex items-center justify-center text-white text-sm shadow-md animate-pulse">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div>
+                    <div class="font-black text-lg" style="background:linear-gradient(135deg,#fa709a,#f5576c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Спринт</div>
+                    <div class="text-xs text-gray-500 font-semibold">60 секунд на максимум!</div>
+                </div>
+            </div>
         </div>
-        <p style="color: #718096; font-size: 14px;">У вас 60 секунд. Наберите максимум баллов!</p>
-        <button class="level-btn" style="width: 100%; margin-top: 15px; display: none;" id="start-btn" onclick="startSprint()">🚀 Начать спринт</button>
-    </div>
 
-    <div class="game-ui" id="game-ui">
-        <div class="timer-bar"><div class="timer-fill" id="timer-fill"></div></div>
-        <div class="stats-row">
-            <span>⏱ <span id="timer-text">60</span>с</span>
-            <span>⭐ Баллы: <span id="score-text">0</span></span>
-            <span class="combo-badge" id="combo-badge">🔥 x2</span>
+        <!-- Выбор уровня -->
+        <div id="level-select" class="glass-card rounded-3xl p-8 shadow-2xl text-center" data-aos="zoom-in">
+            <div class="text-5xl mb-4">⚡</div>
+            <h2 class="text-2xl font-black text-gray-800 mb-2">Выберите уровень</h2>
+            <p class="text-gray-500 mb-8">Чем выше уровень — тем сложнее вопросы!</p>
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <button onclick="selectLevel(1)" class="level-btn w-16 h-16 rounded-2xl font-black text-xl bg-gradient-to-br from-green-400 to-green-600 text-white shadow-lg" data-level="1">1</button>
+                <button onclick="selectLevel(2)" class="level-btn w-16 h-16 rounded-2xl font-black text-xl bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-lg" data-level="2">2</button>
+                <button onclick="selectLevel(3)" class="level-btn w-16 h-16 rounded-2xl font-black text-xl bg-gradient-to-br from-yellow-400 to-orange-500 text-white shadow-lg" data-level="3">3</button>
+                <button onclick="selectLevel(4)" class="level-btn w-16 h-16 rounded-2xl font-black text-xl bg-gradient-to-br from-purple-400 to-purple-600 text-white shadow-lg" data-level="4">4</button>
+                <button onclick="selectLevel(5)" class="level-btn w-16 h-16 rounded-2xl font-black text-xl bg-gradient-to-br from-red-400 to-red-600 text-white shadow-lg" data-level="5">5</button>
+            </div>
+            <button onclick="startSprint()" id="start-btn" class="px-12 py-4 rounded-2xl font-bold text-lg text-white bg-gradient-to-r from-orange-500 to-red-500 shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                <i class="fas fa-rocket mr-2"></i>Начать спринт!
+            </button>
         </div>
-        <div class="question-box" id="question-text">Загрузка...</div>
-        <div class="options" id="options-container"></div>
-        <div class="feedback" id="feedback"></div>
-    </div>
 
-    <div class="result-screen" id="result-screen">
-        <h2 style="color: var(--secondary);">⏰ Время вышло!</h2>
-        <div class="result-stats">
-            <div class="result-card"><div>Верно</div><div style="font-size:24px; font-weight:bold" id="res-correct">0</div></div>
-            <div class="result-card"><div>Баллы</div><div style="font-size:24px; font-weight:bold; color:var(--success)" id="res-score">0</div></div>
+        <!-- Игровая область -->
+        <div id="sprint-game" class="hidden">
+
+            <!-- HUD -->
+            <div class="grid grid-cols-3 gap-3 mb-6" data-aos="fade-down">
+                <div class="glass-card rounded-2xl p-4 text-center shadow-lg">
+                    <div class="text-3xl font-black text-red-500 timer-glow" id="timer">60</div>
+                    <div class="text-xs text-gray-500 font-bold uppercase">Секунд</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4 text-center shadow-lg">
+                    <div class="text-3xl font-black text-yellow-500" id="score">0</div>
+                    <div class="text-xs text-gray-500 font-bold uppercase">Баллы ⭐</div>
+                </div>
+                <div class="glass-card rounded-2xl p-4 text-center shadow-lg">
+                    <div class="text-3xl font-black text-orange-500" id="streak">0</div>
+                    <div class="text-xs text-gray-500 font-bold uppercase">Серия 🔥</div>
+                </div>
+            </div>
+
+            <!-- Вопрос -->
+            <div class="glass-card rounded-3xl p-8 shadow-2xl" data-aos="zoom-in">
+                <div class="text-center mb-6">
+                    <h2 class="text-xl md:text-2xl font-black text-gray-800" id="sprint-question">Загрузка...</h2>
+                </div>
+                <div class="grid grid-cols-1 gap-3" id="sprint-options">
+                    <!-- Варианты -->
+                </div>
+            </div>
         </div>
-        <div class="record-badge" id="record-badge">🏆 Рекорд: 0</div>
-        <div id="srs-reminder-container"></div>
-        <br>
-        <button class="level-btn" style="width: 100%;" onclick="location.reload()">🔄 Заново</button>
-        <br><br><a href="/" style="color:var(--primary)">🏠 На главную</a>
-    </div>
-</div>
 
-<script>
+        <!-- Результаты -->
+        <div id="sprint-results" class="hidden">
+            <div class="glass-card rounded-3xl p-8 md:p-12 shadow-2xl text-center" data-aos="zoom-in">
+                <div class="text-6xl mb-4">⏰</div>
+                <h2 class="text-3xl font-black text-gray-800 mb-2">Время вышло!</h2>
+                <p class="text-gray-500 font-medium mb-8">Отличная скорость!</p>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-green-50 rounded-2xl p-4 border border-green-200">
+                        <div class="text-3xl font-black text-green-600" id="sprint-correct">0</div>
+                        <div class="text-xs text-green-700 font-semibold uppercase">Верно ✅</div>
+                    </div>
+                    <div class="bg-red-50 rounded-2xl p-4 border border-red-200">
+                        <div class="text-3xl font-black text-red-500" id="sprint-wrong">0</div>
+                        <div class="text-xs text-red-600 font-semibold uppercase">Ошибок ❌</div>
+                    </div>
+                    <div class="bg-yellow-50 rounded-2xl p-4 border border-yellow-200">
+                        <div class="text-3xl font-black text-yellow-600" id="sprint-points">0</div>
+                        <div class="text-xs text-yellow-700 font-semibold uppercase">Баллы ⭐</div>
+                    </div>
+                    <div class="bg-purple-50 rounded-2xl p-4 border border-purple-200">
+                        <div class="text-3xl font-black text-purple-600" id="sprint-record">0</div>
+                        <div class="text-xs text-purple-700 font-semibold uppercase">Рекорд 🏆</div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="restartSprint()" class="px-8 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-orange-500 to-red-500 shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
+                        <i class="fas fa-redo mr-2"></i>Заново
+                    </button>
+                    <a href="/" class="px-8 py-3 rounded-xl font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-all">
+                        <i class="fas fa-home mr-2"></i>На главную
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ once: true });</script>
+
+    <script>
     let selectedLevel = null;
-    let currentGameId = null;
+    let gameId = null;
     let timerInterval = null;
     let timeLeft = 60;
-    let currentQuestionData = null;
+    let score = 0;
+    let streak = 0;
+    let correctCount = 0;
+    let wrongCount = 0;
 
-    function selectLevel(lvl) {
-        selectedLevel = lvl;
-        document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('selected'));
-        event.target.classList.add('selected');
-        document.getElementById('start-btn').style.display = 'block';
+    function selectLevel(level) {
+        selectedLevel = level;
+        document.querySelectorAll('.level-btn').forEach(btn => {
+            btn.classList.remove('active', 'ring-4', 'ring-white');
+            if (parseInt(btn.dataset.level) === level) {
+                btn.classList.add('active', 'ring-4', 'ring-white');
+            }
+        });
+        document.getElementById('start-btn').disabled = false;
     }
 
     async function startSprint() {
         if (!selectedLevel) return;
-        document.getElementById('setup-screen').style.display = 'none';
-        document.getElementById('game-ui').style.display = 'block';
+        document.getElementById('level-select').classList.add('hidden');
+        document.getElementById('sprint-game').classList.remove('hidden');
 
-        try {
-            const res = await fetch('/api/game/sprint/start', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ level: selectedLevel })
-            });
-            const data = await res.json();
-            currentGameId = data.game_id;
-            loadNextQuestion();
-            startTimer();
-        } catch (e) { alert("Ошибка старта"); }
-    }
+        const resp = await fetch('/api/game/sprint/start', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ level: selectedLevel })
+        });
+        const data = await resp.json();
+        gameId = data.game_id;
 
-    function startTimer() {
-        updateTimerUI();
+        timeLeft = 60;
+        score = 0;
+        streak = 0;
+        correctCount = 0;
+        wrongCount = 0;
+
+        updateHUD();
+        loadSprintQuestion();
+
         timerInterval = setInterval(() => {
             timeLeft--;
-            updateTimerUI();
+            document.getElementById('timer').textContent = timeLeft;
+            if (timeLeft <= 10) {
+                document.getElementById('timer').classList.add('text-red-600');
+            }
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                finishGame();
+                finishSprint();
             }
         }, 1000);
     }
 
-    function updateTimerUI() {
-        const fill = document.getElementById('timer-fill');
-        fill.style.width = (timeLeft / 60 * 100) + '%';
-        document.getElementById('timer-text').textContent = timeLeft;
-        if (timeLeft <= 10) fill.classList.add('urgent');
+    function updateHUD() {
+        document.getElementById('timer').textContent = timeLeft;
+        document.getElementById('score').textContent = score;
+        document.getElementById('streak').textContent = streak;
     }
 
-    async function loadNextQuestion() {
-        document.getElementById('feedback').textContent = '';
-        const opts = document.getElementById('options-container');
-        opts.innerHTML = '<div>Загрузка...</div>';
-
-        try {
-            const res = await fetch(`/api/game/question/${currentGameId}`);
-            const data = await res.json();
-            if (data.finished) { finishGame(); return; }
-
-            currentQuestionData = data;
-            document.getElementById('question-text').textContent = data.question;
-            opts.innerHTML = '';
-            data.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-btn';
-                btn.textContent = opt;
-                btn.onclick = () => submitAnswer(opt, btn);
-                opts.appendChild(btn);
-            });
-        } catch (e) { console.error(e); }
-    }
-
-    async function submitAnswer(selectedAnswer, btnElement) {
-        const buttons = document.querySelectorAll('.option-btn');
-        buttons.forEach(b => b.disabled = true);
-
-        let isCorrect = (selectedAnswer === currentQuestionData.correct_answer);
-        if (btnElement) {
-            if (isCorrect) btnElement.classList.add('correct');
-            else {
-                btnElement.classList.add('wrong');
-                buttons.forEach(b => { if(b.textContent === currentQuestionData.correct_answer) b.classList.add('correct'); });
-            }
+    async function loadSprintQuestion() {
+        const resp = await fetch(`/api/game/question/${gameId}`);
+        const data = await resp.json();
+        if (data.finished) {
+            finishSprint();
+            return;
         }
 
-        try {
-            const res = await fetch('/api/game/sprint/answer', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ game_id: currentGameId, word_id: currentQuestionData.word_id, answer: selectedAnswer })
-            });
-            const data = await res.json();
+        document.getElementById('sprint-question').textContent = data.question;
+        const container = document.getElementById('sprint-options');
+        container.innerHTML = '';
 
-            document.getElementById('score-text').textContent = data.sprint_score;
-            const comboBadge = document.getElementById('combo-badge');
-            if (data.combo_active) { comboBadge.style.display = 'inline-block'; } else { comboBadge.style.display = 'none'; }
-
-            const feedback = document.getElementById('feedback');
-            feedback.textContent = isCorrect ? "✅ Верно!" : `❌ ${data.correct_answer}`;
-            feedback.style.color = isCorrect ? 'var(--success)' : 'var(--danger)';
-
-            setTimeout(loadNextQuestion, 600);
-        } catch (e) { console.error(e); }
+        data.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'option-btn w-full text-left px-6 py-4 rounded-xl font-semibold text-gray-700 text-lg';
+            btn.textContent = opt;
+            btn.onclick = () => submitSprintAnswer(opt, btn, data.word_id);
+            container.appendChild(btn);
+        });
     }
 
-    async function finishGame() {
-        document.getElementById('game-ui').style.display = 'none';
-        document.getElementById('result-screen').style.display = 'block';
+    async function submitSprintAnswer(selected, btnElement, wordId) {
+        document.querySelectorAll('#sprint-options button').forEach(b => b.onclick = null);
 
-        const res = await fetch('/api/game/sprint/finish', {
+        const isCorrect = selected === document.getElementById('sprint-question').dataset.correct;
+        // Определяем правильный ответ через API
+        const resp = await fetch('/api/game/sprint/answer', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ game_id: currentGameId })
-        });
-        const data = await res.json();
-        document.getElementById('res-correct').textContent = data.correct;
-        document.getElementById('res-score').textContent = "+" + data.sprint_score;
-
-        const statsRes = await fetch('/api/user/stats');
-        const stats = await statsRes.json();
-        document.getElementById('record-badge').textContent = `🏆 Рекорд: ${stats.sprint_record} верных`;
-
-        // Обновляем SRS после спринта
-        updateSrsAfterGame();
-    }
-
-    // Функция обновления SRS после игры
-    function updateSrsAfterGame() {
-        fetch('/api/srs/stats')
-            .then(r => r.json())
-            .then(stats => {
-                const reminderContainer = document.getElementById('srs-reminder-container');
-                if (stats.due_now > 0) {
-                    reminderContainer.innerHTML = `
-                        <div class="srs-reminder">
-                            <strong>⚠️ Не забудьте повторить слова!</strong><br>
-                            ${stats.due_now} слов требуют повторения.
-                            <br>
-                            <a href="/">🔔 Перейти к повторению</a>
-                        </div>
-                    `;
-                } else if (stats.due_today > 0) {
-                    reminderContainer.innerHTML = `
-                        <div class="srs-reminder" style="background: #fefcbf; color: #975a16;">
-                            <strong>📅 Сегодня нужно повторить ${stats.due_today} слов</strong>
-                            <br>
-                            <a href="/" style="color: #975a16;">🔔 Перейти к повторению</a>
-                        </div>
-                    `;
-                }
+            body: JSON.stringify({
+                game_id: gameId,
+                word_id: wordId,
+                answer: selected
             })
-            .catch(err => console.error('Ошибка загрузки SRS статистики:', err));
+        });
+        const data = await resp.json();
+
+        if (data.is_correct) {
+            btnElement.classList.add('correct');
+            correctCount++;
+            streak = data.streak;
+            score = data.sprint_score;
+        } else {
+            btnElement.classList.add('wrong');
+            wrongCount++;
+            streak = 0;
+            document.querySelectorAll('#sprint-options button').forEach(b => {
+                if (b.textContent === data.correct_answer) b.classList.add('correct');
+            });
+        }
+
+        updateHUD();
+
+        // Анимация серии
+        if (streak >= 5) {
+            document.getElementById('streak').parentElement.classList.add('streak-fire');
+            setTimeout(() => document.getElementById('streak').parentElement.classList.remove('streak-fire'), 500);
+        }
+
+        setTimeout(loadSprintQuestion, data.is_correct ? 500 : 1000);
     }
-</script>
+
+    async function finishSprint() {
+        clearInterval(timerInterval);
+        document.getElementById('sprint-game').classList.add('hidden');
+        document.getElementById('sprint-results').classList.remove('hidden');
+
+        const resp = await fetch('/api/game/sprint/finish', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ game_id: gameId })
+        });
+        const data = await resp.json();
+
+        document.getElementById('sprint-correct').textContent = data.correct || correctCount;
+        document.getElementById('sprint-wrong').textContent = data.wrong || wrongCount;
+        document.getElementById('sprint-points').textContent = data.sprint_score || score;
+        document.getElementById('sprint-record').textContent = data.sprint_record || 0;
+    }
+
+    function restartSprint() {
+        document.getElementById('sprint-results').classList.add('hidden');
+        document.getElementById('sprint-game').classList.add('hidden');
+        document.getElementById('level-select').classList.remove('hidden');
+        selectedLevel = null;
+        document.getElementById('start-btn').disabled = true;
+        document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active', 'ring-4', 'ring-white'));
+        document.getElementById('timer').classList.remove('text-red-600');
+    }
+    </script>
 </body>
 </html>

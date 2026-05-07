@@ -3,174 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход - Memorio</title>
+    <title>Вход — PythonMemorio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #4facfe);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
         }
-
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
-            width: 100%;
-            max-width: 400px;
-            animation: fadeIn 0.5s ease;
+        @keyframes gradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
         }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
-
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 30px;
-            text-align: center;
+        .input-field {
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(102, 126, 234, 0.2);
+            transition: all 0.3s ease;
         }
-
-        .header h1 {
-            color: white;
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: rgba(255,255,255,0.9);
-            font-size: 0.9em;
-        }
-
-        .form-container {
-            padding: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: all 0.3s;
-        }
-
-        input:focus {
-            outline: none;
+        .input-field:focus {
             border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+            outline: none;
         }
-
-        button {
-            width: 100%;
-            padding: 12px;
+        .btn-login {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1em;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
         }
-
-        button:hover {
-            transform: scale(1.02);
-        }
-
-        .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .message.error {
-            background: #fee;
-            color: #c33;
-            border: 1px solid #fcc;
-        }
-
-        .message.success {
-            background: #efe;
-            color: #3c3;
-            border: 1px solid #cfc;
-        }
-
-        .links {
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
-        }
-
-        .links a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .links a:hover {
-            text-decoration: underline;
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>🧠 Memorio</h1>
-            <p>Войдите в свой аккаунт</p>
+<body class="flex items-center justify-center min-h-screen px-4">
+
+    <div class="glass-card rounded-3xl p-8 md:p-12 w-full max-w-md shadow-2xl" data-aos="zoom-in" data-aos-duration="800">
+
+        <!-- Лого -->
+        <div class="text-center mb-8">
+            <div class="w-20 h-20 bg-gradient-to-br from-green-400 via-blue-500 to-purple-600 rounded-3xl flex items-center justify-center text-white text-3xl mx-auto mb-4 shadow-xl">
+                <i class="fas fa-brain"></i>
+            </div>
+            <h1 class="text-3xl font-black gradient-text" style="background:linear-gradient(135deg,#667eea,#764ba2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">PythonMemorio</h1>
+            <p class="text-gray-500 mt-2 font-medium">Войдите в свой аккаунт</p>
         </div>
 
-        <div class="form-container">
-            {% if message %}
-            <div class="message {{ message_type }}">{{ message }}</div>
-            {% endif %}
+        <!-- Сообщения -->
+        {% if message %}
+        <div class="mb-6 p-4 rounded-xl {% if message_type == 'error' %}bg-red-50 text-red-700 border border-red-200{% else %}bg-green-50 text-green-700 border border-green-200{% endif %} text-sm font-semibold flex items-center gap-2">
+            <i class="fas {% if message_type == 'error' %}fa-exclamation-circle{% else %}fa-check-circle{% endif %}"></i>
+            {{ message }}
+        </div>
+        {% endif %}
 
-            <form method="POST">
-                <div class="form-group">
-                    <label>Имя пользователя</label>
-                    <input type="text" name="username" required autofocus>
-                </div>
-
-                <div class="form-group">
-                    <label>Пароль</label>
-                    <input type="password" name="password" required>
-                </div>
-
-                <button type="submit">Войти</button>
-            </form>
-
-            <div class="links">
-                Нет аккаунта? <a href="/register">Зарегистрироваться</a>
+        <!-- Форма -->
+        <form method="POST" class="space-y-5">
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">
+                    <i class="fas fa-user mr-1 text-blue-500"></i>Имя пользователя
+                </label>
+                <input type="text" name="username" required
+                    class="input-field w-full px-5 py-3.5 rounded-xl text-gray-800 font-medium placeholder-gray-400"
+                    placeholder="Введите имя...">
             </div>
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-2">
+                    <i class="fas fa-lock mr-1 text-purple-500"></i>Пароль
+                </label>
+                <input type="password" name="password" required
+                    class="input-field w-full px-5 py-3.5 rounded-xl text-gray-800 font-medium placeholder-gray-400"
+                    placeholder="Введите пароль...">
+            </div>
+            <button type="submit" class="btn-login w-full text-white py-4 rounded-xl font-bold text-lg shadow-lg">
+                <i class="fas fa-sign-in-alt mr-2"></i>Войти
+            </button>
+        </form>
+
+        <!-- Ссылка на регистрацию -->
+        <div class="mt-8 text-center">
+            <p class="text-gray-500 text-sm">
+                Нет аккаунта?
+                <a href="/register" class="text-blue-600 font-bold hover:underline ml-1">Зарегистрироваться</a>
+            </p>
         </div>
     </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>AOS.init({ once: true });</script>
 </body>
 </html>
