@@ -23,8 +23,3 @@ Progressive Web Application для изучения терминологии и 
 | **PWA** | `manifest.json`, набор иконок, viewport-оптимизация |
 | **Безопасность** | Flask-сессии, хеширование паролей (SHA-256) |
 
-##  Установка и запуск
-1. Клонируйте репозиторий:
-   ```bash
-   git clone https://github.com/your-username/memorio.git
-   cd memorio
